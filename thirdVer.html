@@ -66,7 +66,7 @@
             font-family: 'Inter', sans-serif; 
             background: var(--background-color); 
             color: var(--text-color); 
-            transition: background 0.5s ease-in-out, color 0.5s ease-in-out; /* Smoother background and text color transitions */
+            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
         } 
 
         .editorContainer {
@@ -96,7 +96,7 @@
             padding: 20px; 
             box-sizing: border-box; 
             position: relative; 
-            transition: all 0.5s ease-in-out; /* Smoother transitions for the main editor */
+            transition: all 0.5s ease-in-out;
         } 
 
         .paper { 
@@ -110,7 +110,7 @@
             overflow-y: auto; 
             padding: 20px; 
             box-sizing: border-box; 
-            transition: color 0.5s ease-in-out; /* Smooth color transition */
+            transition: color 0.5s ease-in-out;
         } 
 
         .paper h1 {
@@ -156,7 +156,7 @@
             align-items: center; 
             padding: 12px 0; 
             box-sizing: border-box; 
-            transition: background 0.3s ease-in-out; /* Smooth background transition */
+            transition: background 0.3s ease-in-out;
         } 
 
         .toolbarLeft {
@@ -197,7 +197,7 @@
 
         .textFormatButtons span:hover, .textFormatButtons span.active {
             color: var(--action-button-color); 
-            transition: color 0.3s ease-in-out; /* Smooth color change on hover */
+            transition: color 0.3s ease-in-out;
             font-weight: 600;
         } 
 
@@ -251,11 +251,11 @@
             font-size: 32px; 
             cursor: pointer; 
             margin: 12px 0; 
-            transition: transform 0.3s ease-in-out; /* Smooth scaling effect on hover */
+            transition: transform 0.3s ease-in-out;
         } 
 
         .actionButton:hover { 
-            transform: scale(1.1); /* Slightly enlarge on hover for effect */
+            transform: scale(1.1);
         } 
 
         .settingsMenu { 
@@ -269,8 +269,8 @@
             z-index: 1000; 
             display: none; 
             min-width: 300px; 
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); /* Softer shadow for depth */
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Smooth appearance transition */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
         } 
 
         .settingsMenu h2 {
@@ -333,7 +333,7 @@
             z-index: 9999; 
             opacity: 0; 
             visibility: hidden; 
-            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Smoother visibility transition */
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
         }
 
         .background-circles {
@@ -356,7 +356,7 @@
 
         .lock-content {
             position: relative;
-            z-index: 2; /* Above the circles */
+            z-index: 2;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -409,14 +409,14 @@
 
         #webcamContainer {
             position: fixed;
-            top: -10px;  /* Slightly off-screen */
-            left: -10px; /* Slightly off-screen */
+            top: -10px;
+            left: -10px;
             width: 20px;
             height: 20px;
-            opacity: 0.01; /* Nearly invisible */
-            z-index: -1;  /* Behind other elements */
-            overflow: hidden; /* Hide overflow */
-            pointer-events: none; /* Ignore mouse events */
+            opacity: 0.01;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
         }
 
         #webcamContainer canvas {
@@ -479,22 +479,20 @@
             margin-top: 20px;
         }
 
-        /* Caret CSS */
         .blinktext {
             display: inline-block;
-            animation: blink 1s step-end infinite; /* Blinking effect */
-            vertical-align: middle; /* Align caret with text */
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
             color: #FF4242;
             text-rendering: optimizeLegibility;
         }
 
-        /* Keyframes for blinking effect */
         @keyframes blink {
             0%, 100% {
-                opacity: 1; /* Fully visible */
+                opacity: 1;
             }
             50% {
-                opacity: 0; /* Fully transparent */
+                opacity: 0;
             }
         }
 
@@ -537,7 +535,7 @@
         </div>
         <div class="lock-content">
             <img src="buddyicon.lockscreen.svg" alt="Icon not found (lol)">
-            <p>Currently writing: How AI in Buddy Docs works</p>
+            <p>Currently writing: Untitled Document</p>
         </div>
     </div>
 
@@ -568,15 +566,8 @@
         </div>
         <div class="mainEditor">
             <div class="paper" contenteditable="true" spellcheck="true">
-                <h1>How AI in Buddy Docs works</h1>
-                <p>This document will show you how Buddy Docs works, like for example the Face ID, the one you are using.</p>
-                <h2>Face ID</h2>
-                <p>This app uses Tensorflow.JS for the AI, including the Face ID feature too.</p>
-                <p>How it works, is that we've trained it up on backgrounds, pets, common objects, and most importantly; faces. We then put all that data into a class, before training it, making so whenever a face is detected, it unlocks the screen. Though it doesn't unlock on a single face yet, we are developing it to manage to find out if it's a specific person or not.</p>
-                <h2>Other Features that may be added</h2>
-                <p>In development: Autocorrection, Full Face ID, Chatbot, Fully integrated Study Pages, Chat with Wikipedia pages, Summerizations of text, and themes.</p>
-                <p>Might happen: Generative AI, Writing Partner 🤫, Auto-completion, Translation, Quizzes, Personalization, and much, much more.</p>
-                <span class="blinktext"><p>WE WILL RELEASE THE NO AI VERSION FIRST AT Q2 2025!!!</p></span> <!-- Caret element -->
+                <!-- Hawk tuah write on that thing -->
+                <span class="blinktext"><p>WE WILL RELEASE THE NO AI VERSION FIRST AT Q2 2025!!!</p></span>
             </div>
         </div>
         <div class="toolbarLeft">
@@ -717,7 +708,6 @@
 
         // Add event listener for keydown
         document.addEventListener('keydown', (event) => {
-            // Check if Ctrl key is pressed along with 'P'
             if (event.ctrlKey && event.key === 'p') {
                 event.preventDefault(); // Prevent the default print dialog
 
@@ -728,18 +718,15 @@
                 const printWindow = window.open('', '', 'height=600,width=800');
                 printWindow.document.write('<html><head><title>Print</title>');
                 printWindow.document.write('</head><body>');
-                printWindow.document.write(content); // Add the content to the new window
+                printWindow.document.write(content);
                 printWindow.document.write('</body></html>');
-                printWindow.document.close(); // Close the document
-                printWindow.focus(); // Focus on the new window
-
-                // Print the content
+                printWindow.document.close();
+                printWindow.focus();
                 printWindow.print();
-                printWindow.close(); // Close the print window after printing
+                printWindow.close();
             }
         });
 
-        // Update button states based on current selection
         paper.addEventListener('keyup', updateButtonStates);
         paper.addEventListener('mouseup', updateButtonStates);
         paper.addEventListener('mousedown', updateButtonStates);
@@ -772,8 +759,8 @@
                         underlineBtn.click();
                         break;
                     case 's':
-                        e.preventDefault(); // Prevent the default action (if any)
-                        document.getElementById('downloadButton').click(); // Trigger the download button click
+                        e.preventDefault(); // Prevent the default action (if any, lol)
+                        document.getElementById('downloadButton').click(); // I'm trying to fix this man, it no work.
                         break;
                 }
             }
