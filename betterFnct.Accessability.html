@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #10100A;
+            color: #E6EFDD;
+            transition: all 0.3s ease;
+        }
+
+        .editorContainer {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logoContainer {
+            width: 72px;
+            height: 72px;
+            position: absolute;
+            left: 16px;
+            top: 16px;
+        }
+
+        .mainEditor {
+            width: 95%;
+            max-width: 1320px;
+            height: 95vh;
+            background: #13120F;
+            border-radius: 15px;
+            border: 1px #6A6862 solid;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .paper {
+            width: 100%;
+            height: 100%;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #E6EFDD;
+            overflow-y: auto;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .paper h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .paper h2 {
+            font-size: 2em;
+            margin-bottom: 0.5em;
+        }
+
+        .paper h3 {
+            font-size: 1.75em;
+            margin-bottom: 0.5em;
+        }
+
+        .toolbarLeft, .toolbarRight {
+            width: 64px;
+            position: absolute;
+            left: 17px;
+            background: #28281D;
+            border-radius: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 0;
+            box-sizing: border-box;
+        }
+
+        .toolbarLeft {
+            top: 112px;
+            height: 360px;
+        }
+
+        .toolbarRight {
+            bottom: 16px;
+            height: 192px;
+        }
+
+        .textFormatContainer {
+            width: 40px;
+            height: 120px;
+            background: #534A33;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .textFormatButtons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .textFormatButtons span {
+            font-size: 20px;
+            font-weight: 200;
+            cursor: pointer;
+            transition: color 0.2s;
+            margin: 4px 0;
+        }
+
+        .textFormatButtons span:hover {
+            color: #FFEEAB;
+        }
+
+        .active {
+            color: #FFEEAB;
+        }
+
+        .toolButton {
+            width: 40px;
+            height: 40px;
+            background: #534A33;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: white;
+            margin: 8px 0;
+            cursor: pointer;
+        }
+
+        .colorPalette {
+            width: 40px;
+            height: 84px;
+            background: #534A33;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        .colorSwatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .primaryColor {
+            background: white;
+        }
+
+        .secondaryColor {
+            background: #6D6551;
+        }
+
+        .actionButton {
+            color: #FFEEAB;
+            font-size: 32px;
+            cursor: pointer;
+            margin: 12px 0;
+        }
+
+        /* Settings Menu Styles */
+        .settingsMenu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #28281D;
+            border-radius: 15px;
+            padding: 30px;
+            z-index: 1000;
+            display: none;
+            min-width: 300px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .settingsMenu h2 {
+            margin-top: 0;
+            color: #FFEEAB;
+            margin-bottom: 20px;
+        }
+
+        .settingsMenu label {
+            display: block;
+            margin: 15px 0;
+            color: #E6EFDD;
+            cursor: pointer;
+        }
+
+        .settingsMenu select {
+            margin-top: 5px;
+            background: #534A33;
+            border: none;
+            padding: 8px;
+            color: #E6EFDD;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .closeSettings {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            color: #FFEEAB;
+        }
+
+        .statusBar {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(40, 40, 29, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        /* Theme Classes */
+        .light-theme {
+            background: #F5F5F5;
+            color: #333;
+        }
+
+        .light-theme .mainEditor {
+            background: #FFFFFF;
+            border-color: #DDD;
+        }
+
+        .light-theme .paper {
+            color: #333;
+        }
+
+        .high-contrast {
+            background: #000;
+            color: #FFF;
+        }
+
+        .high-contrast .mainEditor {
+            background: #000;
+            border-color: #FFF;
+        }
+
+        .high-contrast .paper {
+            color: #FFF;
+        }
+
+        .separator {
+            margin: 0 10px;
+            color: #6A6862;
+        }
+
+        @media (max-width: 768px) {
+            .toolbarLeft, .toolbarRight {
+                width: 48px;
+                left: 8px;
+            }
+
+            .mainEditor {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .textFormatContainer, .colorPalette, .toolButton {
+                width: 36px;
+            }
+
+            .textFormatButtons span {
+                font-size: 18px;
+            }
+
+            .colorSwatch {
+                width: 28px;
+                height: 28px;
+            }
+
+            .actionButton {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="editorContainer">
+        <div class="logoContainer">
+            <img src="buddyicon.svg" alt="" class="themeLogo" data-dark-src="buddyicon.svg" data-light-src="buddyicon.premium.svg" data-sepia-src="buddyicon.svg">
+        </div>
+        <div class="mainEditor">
+            <div class="paper" contenteditable="true" spellcheck="true"></div>
+        </div>
+        <div class="toolbarLeft">
+            <div class="textFormatContainer">
+                <div class="textFormatButtons">
+                    <span id="boldBtn">B</span>
+                    <span id="italicBtn">I</span>
+                    <span id="underlineBtn">U</span>
+                </div>
+            </div>
+            <div class="toolButton fontSizeButton">11</div>
+            <div class="colorPalette">
+                <div class="colorSwatch primaryColor"></div>
+                <div class="colorSwatch secondaryColor"></div>
+            </div>
+            <div class="toolButton paintButton">
+                <span class="material-icons" style="font-size: 20px;">format_paint</span>
+            </div>
+        </div>
+        <div class="toolbarRight">
+            <div class="actionButton downloadButton material-icons">download</div>
+            <div class="actionButton settingsButton material-icons">settings</div>
+            <div class="actionButton logoutButton material-icons">logout</div>
+        </div>
+        <div class="settingsMenu">
+            <span class="closeSettings material-icons">close</span>
+            <h2>Settings</h2>
+            <label>
+                <input type="checkbox" id="highContrastMode"> High Contrast Mode
+            </label>
+            <label>
+                <input type="checkbox" id="fullscreenMode"> Fullscreen
+            </label>
+            <label>
+                <input type="checkbox" id="showStatus"> Show Status while writing
+            </label>
+            <label>
+                Theme:
+                <select id="themeSelect">
+                    <option value="dark">Dark</option>
+                    <option value="light">Light</option>
+                    <option value="sepia">Sepia</option>
+                </select>
+            </label>
+        </div>
+        <div class="statusBar">
+            <span id="batteryLevel">100%</span>
+            <span class="separator">|</span>
+            <span id="currentTime">12:00 PM</span>
+            <span class="separator"> </span>
+            <span id="currentDate">2024-10-30</span>
+        </div>
+    </div>
+
+    <script>
+        const paper = document.querySelector('.paper');
+        const themeLogo = document.querySelector('.themeLogo');
+        const boldBtn = document.getElementById('boldBtn');
+        const italicBtn = document.getElementById('italicBtn');
+        const underlineBtn = document.getElementById('underlineBtn');
+        const settingsButton = document.querySelector('.settingsButton');
+        const settingsMenu = document.querySelector('.settingsMenu');
+        const closeSettings = document.querySelector('.closeSettings');
+        const highContrastMode = document.getElementById('highContrastMode');
+        const fullscreenMode = document.getElementById('fullscreenMode');
+        const showStatus = document.getElementById('showStatus');
+        const themeSelect = document.getElementById('themeSelect');
+        const statusBar = document.querySelector('.statusBar');
+        const batteryLevel = document.getElementById('batteryLevel');
+        const currentTime = document.getElementById('currentTime');
+        const currentDate = document.getElementById('currentDate');
+
+        // Format buttons functionality
+        boldBtn.addEventListener('click', () => {
+            document.execCommand('bold', false, null);
+            boldBtn.classList.toggle('active');
+        });
+
+        italicBtn.addEventListener('click', () => {
+            document.execCommand('italic', false, null);
+            italicBtn.classList.toggle('active');
+        });
+
+        underlineBtn.addEventListener('click', () => {
+            document.execCommand('underline', false, null);
+            underlineBtn.classList.toggle('active');
+        });
+
+        // Keyboard shortcuts for headings
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.altKey) {
+                switch (e.key) {
+                    case '1':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h1>'); break;
+                    case '2':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h2>'); 
+                        break;
+                    case '3':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h3>'); 
+                        break;
+                    case '0':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<p>'); 
+                        break;
+                }
+            }
+        });
+
+        // Update button states based on current selection
+        paper.addEventListener('keyup', updateButtonStates);
+        paper.addEventListener('mouseup', updateButtonStates);
+        paper.addEventListener('mousedown', updateButtonStates);
+
+        function updateButtonStates() {
+            boldBtn.classList.toggle('active', document.queryCommandState('bold'));
+            italicBtn.classList.toggle('active', document.queryCommandState('italic'));
+            underlineBtn.classList.toggle('active', document.queryCommandState('underline '));
+        }
+
+        // Set initial focus
+        window.addEventListener('load', () => {
+            paper.focus();
+        });
+
+        // Keyboard shortcuts for formatting
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && !e.altKey) {
+                switch (e.key.toLowerCase()) {
+                    case 'b':
+                        e.preventDefault();
+                        boldBtn.click();
+                        break;
+                     case 'i':
+                        e.preventDefault();
+                        italicBtn.click();
+                        break;
+                    case 'u':
+                        e.preventDefault();
+                        underlineBtn.click();
+                        break;
+                }
+            }
+        });
+
+        // Settings menu functionality
+        settingsButton.addEventListener('click', () => {
+            settingsMenu.style.display = 'block';
+        });
+
+        closeSettings.addEventListener('click', () => {
+            settingsMenu.style.display = 'none';
+        });
+
+        highContrastMode.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.body.classList.add('high-contrast');
+            } else {
+                document.body.classList.remove('high-contrast');
+            }
+        });
+
+        fullscreenMode.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.body.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        showStatus.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                statusBar.style.display = 'block';
+            } else {
+                statusBar.style.display = 'none';
+            }
+        });
+
+        themeSelect.addEventListener('change', (e) => {
+            document.body.classList.remove('light-theme', 'dark-theme', 'sepia-theme');
+            switch (e.target.value) {
+                case 'light':
+                    document.body.classList.add('light-theme');
+                    themeLogo.src = themeLogo.dataset.lightSrc;
+                    break;
+                case 'dark':
+                    document.body.classList.add('dark-theme');
+                    themeLogo.src = themeLogo.dataset.darkSrc;
+                    break;
+                case 'sepia':
+                    document.body.classList.add('sepia-theme');
+                    themeLogo.src = themeLogo.dataset.sepiaSrc;
+                    break;
+            }
+        });
+
+        // Add battery monitoring
+        async function updateBattery() {
+            try {
+                if ('getBattery' in navigator) {
+                    const battery = await navigator.getBattery();
+                    const level = Math.floor(battery.level * 100);
+                    batteryLevel.textContent = `${level}%`;
+
+                    battery.addEventListener('levelchange', () => {
+                        const newLevel = Math.floor(battery.level * 100);
+                        batteryLevel.textContent = `${newLevel}%`;
+                    });
+                } else {
+                    batteryLevel.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Battery status not supported');
+                batteryLevel.style.display = 'none';
+            }
+        }
+
+        
+        // Update the updateStatusBar function
+        function updateStatusBar() {
+            const date = new Date();
+            currentTime.textContent = date.toLocaleTimeString();
+            currentDate.textContent = date.toLocaleDateString();
+            updateBattery();
+        }
+
+        // Call updateStatusBar immediately and then every second
+        updateStatusBar();
+        setInterval(updateStatusBar, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buddy Docs - 0.3.6 BETA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --text-color: #E6EFDD;
+            --background-color: #13120F;
+            --primary-color: #FFFFFF;
+            --secondary-color: #6D6551;
+            --toolbar-background: #28281D;
+            --toolbar-border: #6A6862;
+            --status-bar-background: rgba(40, 40, 29, 0.8);
+            --status-bar-text: #E6EFDD;
+            --separator-color: #6A6862;
+            --settings-menu-background: #28281D;
+            --settings-menu-text: #E6EFDD;
+            --settings-menu-select-background: #534A33;
+            --settings-menu-select-text: #E6EFDD;
+            --close-button-color: #FFEEAB;
+            --action-button-color: #FFEEAB;
+            --tool-button-background: #534A33;
+            --tool-button-text: white;
+            --text-format-container-background: #534A33;
+            --color-palette-background: #534A33;
+            --primary-color-swatch: white;
+            --secondary-color-swatch: #6D6551;
+        }
+
+        .light-theme {
+            --text-color: #333;
+            --background-color: #F5F5F5;
+            --primary-color: #000000;
+            --secondary-color: #CCCCCC;
+            --toolbar-background: #DDD;
+            --toolbar-border: #CCC;
+            --status-bar-background: rgba(220, 220, 220, 0.8);
+            --status-bar-text: #333;
+            --separator-color: #CCC;
+            --settings-menu-background: #DDD;
+            --settings-menu-text: #333;
+            --settings-menu-select-background: #CCC;
+            --settings-menu-select-text: #333;
+            --close-button-color: #4E4419;
+            --action-button-color: #413C37;
+            --tool-button-background: #CCC;
+            --tool-button-text: #333;
+            --text-format-container-background: #CCC;
+            --color-palette-background: #CCC;
+            --primary-color-swatch: #000000;
+            --secondary-color-swatch: #CCCCCC;
+        }
+
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Inter', sans-serif; 
+            background: var(--background-color); 
+            color: var(--text-color); 
+            transition: background 0.5s ease-in-out, color 0.5s ease-in-out; /* Smoother background and text color transitions */
+        } 
+
+        .editorContainer {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logoContainer {
+            width: 72px;
+            height: 72px;
+            position: absolute;
+            left: 16px;
+            top: 16px;
+        }
+
+        .mainEditor { 
+            width: 95%; 
+            max-width: 1320px; 
+            height: 95vh; 
+            background: var(--background-color); 
+            border-radius: 15px; 
+            border: 1px var(--toolbar-border) solid; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            position: relative; 
+            transition: all 0.5s ease-in-out; /* Smoother transitions for the main editor */
+        } 
+
+        .paper { 
+            width: 100%; 
+            height: 100%; 
+            outline: none; 
+            font-family: 'Inter', sans-serif; 
+            font-size: 16px; 
+            line-height: 1.5; 
+            color: var(--text-color); 
+            overflow-y: auto; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            transition: color 0.5s ease-in-out; /* Smooth color transition */
+        } 
+
+        .paper h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .paper h2 {
+            font-size: 2em;
+            margin-bottom: 0.5em;
+        }
+
+        .paper h3 {
+            font-size: 1.75em;
+            margin-bottom: 0.5em;
+        }
+
+        .paper h4 {
+            font-size: 1.5em;
+            margin-bottom: 0.4em;
+        }
+        
+        .paper h5 {
+            font-size: 1.25em;
+            margin-bottom: 0.4em;
+            font-weight: lighter;
+        }
+
+        .paper h6 {
+            font-size: 1.1em;
+            margin-bottom: 0.3em;
+            font-weight: lighter;
+        }
+
+        .toolbarLeft, .toolbarRight { 
+            width: 64px; 
+            position: absolute; 
+            left: 17px; 
+            background: var(--toolbar-background); 
+            border-radius: 32px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 12px 0; 
+            box-sizing: border-box; 
+            transition: background 0.3s ease-in-out; /* Smooth background transition */
+        } 
+
+        .toolbarLeft {
+            top: 112px;
+            height: 360px;
+        }
+
+        .toolbarRight {
+            bottom: 16px;
+            height: 192px;
+        }
+
+        .textFormatContainer {
+            width: 40px;
+            height: 120px;
+            background: var(--text-format-container-background);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .textFormatButtons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .textFormatButtons span {
+            font-size: 20px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: color 0.2s;
+            margin: 4px 0;
+        }
+
+        .textFormatButtons span:hover, .textFormatButtons span.active {
+            color: var(--action-button-color); 
+            transition: color 0.3s ease-in-out; /* Smooth color change on hover */
+            font-weight: 600;
+        } 
+
+        .toolButton {
+            width: 40px;
+            height: 40px;
+            background: var(--tool-button-background);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: var(--tool-button-text);
+            margin: 8px 0;
+            cursor: pointer;
+        }
+
+        .colorPalette {
+            width: 40px;
+            height: 84px;
+            background: var(--color-palette-background);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        .colorSwatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .primaryColor {
+            background: var(--primary-color-swatch);
+        }
+
+        .secondaryColor {
+            background: var(--secondary-color-swatch);
+        }
+
+        .actionButton { 
+            color: var(--action-button-color); 
+            font-size: 32px; 
+            cursor: pointer; 
+            margin: 12px 0; 
+            transition: transform 0.3s ease-in-out; /* Smooth scaling effect on hover */
+        } 
+
+        .actionButton:hover { 
+            transform: scale(1.1); /* Slightly enlarge on hover for effect */
+        } 
+
+        .settingsMenu { 
+            position: absolute; 
+            top: 50%; 
+            left: 50%; 
+            transform: translate(-50%, -50%); 
+            background: var(--settings-menu-background); 
+            border-radius: 15px; 
+            padding: 30px; 
+            z-index: 1000; 
+            display: none; 
+            min-width: 300px; 
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); /* Softer shadow for depth */
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out; /* Smooth appearance transition */
+        } 
+
+        .settingsMenu h2 {
+            margin-top: 0;
+            color: var(--action-button-color);
+            margin-bottom: 20px;
+        }
+
+        .settingsMenu label {
+            display: block;
+            margin: 15px 0;
+            color: var(--settings-menu-text);
+            cursor: pointer;
+        }
+
+        .settingsMenu select {
+            margin-top: 5px;
+            background: var(--settings-menu-select-background);
+            border: none;
+            padding: 8px;
+            color: var(--settings-menu-select-text);
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .closeSettings {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            color: var(--close-button-color);
+        }
+
+        .statusBar {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: var(--status-bar-background);
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .separator {
+            margin: 0 10px;
+            color: var(--separator-color);
+        }
+
+        #lockScreen { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: black; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 9999; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; /* Smoother visibility transition */
+        }
+
+        .background-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(51, 48, 250, 0.25);
+            /*backdrop-filter: blur(10px);*/ /* REMOVED CUZ OF LAG*/
+            transition: all 20s linear;
+            filter: blur(20px);
+        }
+
+        .lock-content {
+            position: relative;
+            z-index: 2; /* Above the circles */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            row-gap: 16px;
+        }
+
+        #lockScreen.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #lockScreen img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            transform: scale(0);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #lockScreen.visible img {
+            transform: scale(1);
+        }
+
+        #lockScreen p {
+            font-size: 24px;
+            color: white;
+            margin: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        #lockScreen.visible p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .editorContainer { 
+            opacity: 1; 
+            transform: scale(1); 
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        } 
+
+        .editorContainer.hidden { 
+            opacity: 0; 
+            transform: scale(0.95); 
+        } 
+
+        #webcamContainer {
+            position: fixed;
+            top: -10px;  /* Slightly off-screen */
+            left: -10px; /* Slightly off-screen */
+            width: 20px;
+            height: 20px;
+            opacity: 0.01; /* Nearly invisible */
+            z-index: -1;  /* Behind other elements */
+            overflow: hidden; /* Hide overflow */
+            pointer-events: none; /* Ignore mouse events */
+        }
+
+        #webcamContainer canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pdfCustomizationMenu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--settings-menu-background);
+            border-radius: 15px;
+            padding: 30px;
+            z-index: 1000;
+            display: none;
+            min-width: 300px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .pdfCustomizationMenu h2 {
+            margin-top: 0;
+            color: var(--action-button-color);
+            margin-bottom: 20px;
+        }
+
+        .pdfCustomizationMenu label {
+            display: block;
+            margin: 15px 0;
+            color: var(--settings-menu-text);
+        }
+
+        .pdfCustomizationMenu input {
+            margin-top: 5px;
+            background: var(--settings-menu-select-background);
+            border: none;
+            padding: 8px;
+            color: var(--settings-menu-select-text);
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .closePdfCustomization {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            color: var(--close-button-color);
+        }
+
+        #generatePdfBtn {
+            background: var(--action-button-color);
+            color: var(--settings-menu-background);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        /* Caret CSS */
+        .blinktext {
+            display: inline-block;
+            animation: blink 1s step-end infinite; /* Blinking effect */
+            vertical-align: middle; /* Align caret with text */
+            color: #FF4242;
+            text-rendering: optimizeLegibility;
+        }
+
+        /* Keyframes for blinking effect */
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1; /* Fully visible */
+            }
+            50% {
+                opacity: 0; /* Fully transparent */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .toolbarLeft, .toolbarRight {
+                width: 48px;
+                left: 8px;
+            }
+
+            .mainEditor {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .textFormatContainer, .colorPalette, .toolButton {
+                width: 36px;
+            }
+
+            .textFormatButtons span {
+                font-size: 18px;
+                font-weight: 200;
+            }
+
+            .colorSwatch {
+                width: 28px;
+                height: 28px;
+            }
+
+            .actionButton {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Lock Screen -->
+    <div id="lockScreen">
+        <div class="background-circles">
+            <!-- Circles will be added by JavaScript -->
+        </div>
+        <div class="lock-content">
+            <img src="buddyicon.lockscreen.svg" alt="Icon not found (lol)">
+            <p>Currently writing: How AI in Buddy Docs works</p>
+        </div>
+    </div>
+
+    <div class="pdfCustomizationMenu">
+        <span class="closePdfCustomization material-icons">close</span>
+        <h2>PDF Customization</h2>
+        <label>
+            Text Color:
+            <input type="color" id="pdfTextColor" value="#E6EFDD">
+        </label>
+        <label>
+            Background Color:
+            <input type="color" id="pdfBackgroundColor" value="#13120F">
+        </label>
+        <label>
+            Font Size:
+            <input type="number" id="pdfFontSize" min="8" max="24" value="12">
+        </label>
+        <button id="generatePdfBtn">Generate PDF</button>
+    </div>
+
+    <!-- Webcam Container -->
+    <div id="webcamContainer"></div>
+
+    <div class="editorContainer">
+        <div class="logoContainer">
+            <img src="buddyicon.svg" alt="" class="themeLogo" data-dark-src="buddyicon.svg" data-light-src="buddyicon.premium.svg" data-sepia-src="buddyicon.yellow.svg">
+        </div>
+        <div class="mainEditor">
+            <div class="paper" contenteditable="true" spellcheck="true">
+                <h1>How AI in Buddy Docs works</h1>
+                <p>This document will show you how Buddy Docs works, like for example the Face ID, the one you are using.</p>
+                <h2>Face ID</h2>
+                <p>This app uses Tensorflow.JS for the AI, including the Face ID feature too.</p>
+                <p>How it works, is that we've trained it up on backgrounds, pets, common objects, and most importantly; faces. We then put all that data into a class, before training it, making so whenever a face is detected, it unlocks the screen. Though it doesn't unlock on a single face yet, we are developing it to manage to find out if it's a specific person or not.</p>
+                <h2>Other Features that may be added</h2>
+                <p>In development: Autocorrection, Full Face ID, Chatbot, Fully integrated Study Pages, Chat with Wikipedia pages, Summerizations of text, and themes.</p>
+                <p>Might happen: Generative AI, Writing Partner 🤫, Auto-completion, Translation, Quizzes, Personalization, and much, much more.</p>
+                <span class="blinktext"><p>WE WILL RELEASE THE NO AI VERSION FIRST AT Q2 2025!!!</p></span> <!-- Caret element -->
+            </div>
+        </div>
+        <div class="toolbarLeft">
+            <div class="textFormatContainer">
+                <div class="textFormatButtons">
+                    <span id="boldBtn">B</span>
+                    <span id="italicBtn">I</span>
+                    <span id="underlineBtn">U</span>
+                </div>
+            </div>
+            <div class="toolButton fontSizeButton">11</div>
+            <div class="colorPalette">
+                <div class="colorSwatch primaryColor"></div>
+                <div class="colorSwatch secondaryColor"></div>
+            </div>
+            <div class="toolButton paintButton">
+                <span class="material-icons" style="font-size: 20px;">format_paint</span>
+            </div>
+        </div>
+        <div class="toolbarRight">
+            <div id="downloadButton" class="actionButton downloadButton material-icons">download</div>
+            <div class="actionButton settingsButton material-icons">settings</div>
+            <div class="actionButton logoutButton material-icons">logout</div>
+        </div>
+        <div class="settingsMenu">
+            <span class="closeSettings material-icons">close</span>
+            <h2>Settings</h2>
+            <label>
+                <input type="checkbox" id="highContrastMode"> High Contrast Mode
+            </label>
+            <label>
+                <input type="checkbox" id="fullscreenMode"> Fullscreen
+            </label>
+            <label>
+                <input type="checkbox" id="showStatus"> Show Status while writing
+            </label>
+            <label>
+                Theme:
+                <select id="themeSelect">
+                    <option value="dark">Dark</option>
+                    <option value="light">Light</option>
+                    <option value="sepia">Sepia</option>
+                </select>
+            </label>
+        </div>
+        <div class="statusBar">
+            <span id="batteryLevel">100%</span>
+            <span class="separator">|</span>
+            <span id="currentTime">12:00 PM</span>
+            <span class="separator"> </span>
+            <span id="currentDate">2024-10-30</span>
+        </div>
+    </div>
+
+    <script>
+        const paper = document.querySelector('.paper');
+        const themeLogo = document.querySelector('.themeLogo');
+        const boldBtn = document.getElementById('boldBtn');
+        const italicBtn = document.getElementById('italicBtn');
+        const underlineBtn = document.getElementById('underlineBtn');
+        const settingsButton = document.querySelector('.settingsButton');
+        const settingsMenu = document.querySelector('.settingsMenu');
+        const closeSettings = document.querySelector('.closeSettings');
+        const highContrastMode = document.getElementById('highContrastMode');
+        const fullscreenMode = document.getElementById('fullscreenMode');
+        const showStatus = document.getElementById('showStatus');
+        const themeSelect = document.getElementById('themeSelect');
+        const statusBar = document.querySelector('.statusBar');
+        const batteryLevel = document.getElementById('batteryLevel');
+        const currentTime = document.getElementById('currentTime');
+        const currentDate = document.getElementById('currentDate');
+
+        // Caret functionality!!! (beta)
+        const editor = document.querySelector('.paper');
+
+        // Format buttons functionality
+        boldBtn.addEventListener('click', () => {
+            document.execCommand('bold', false, null);
+            boldBtn.classList.toggle('active');
+        });
+
+        italicBtn.addEventListener('click', () => {
+            document.execCommand('italic', false, null);
+            italicBtn.classList.toggle('active');
+        });
+
+        underlineBtn.addEventListener('click', () => {
+            document.execCommand('underline', false, null);
+            underlineBtn.classList.toggle('active');
+        });
+
+        document.getElementById('boldBtn').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+
+        document.getElementById('italicBtn').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+
+        document.getElementById('underlineBtn').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+
+        // Keyboard shortcuts for headings
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.altKey) {
+                switch (e.key) {
+                    case '1':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h1>'); break;
+                    case '2':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h2>'); 
+                        break;
+                    case '3':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h3>'); 
+                        break;
+                    case '4':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h4>'); 
+                        break;
+                    case '5':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h5>'); 
+                        break;
+                    case '6':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h6>'); 
+                        break;
+                    case '0':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<p>'); 
+                        break;
+                }
+            }
+        });
+
+        // Add event listener for keydown
+        document.addEventListener('keydown', (event) => {
+            // Check if Ctrl key is pressed along with 'P'
+            if (event.ctrlKey && event.key === 'p') {
+                event.preventDefault(); // Prevent the default print dialog
+
+                // Get the content from the mainEditor div
+                const content = document.querySelector('.mainEditor').innerHTML;
+
+                // Create a new window
+                const printWindow = window.open('', '', 'height=600,width=800');
+                printWindow.document.write('<html><head><title>Print</title>');
+                printWindow.document.write('</head><body>');
+                printWindow.document.write(content); // Add the content to the new window
+                printWindow.document.write('</body></html>');
+                printWindow.document.close(); // Close the document
+                printWindow.focus(); // Focus on the new window
+
+                // Print the content
+                printWindow.print();
+                printWindow.close(); // Close the print window after printing
+            }
+        });
+
+        // Update button states based on current selection
+        paper.addEventListener('keyup', updateButtonStates);
+        paper.addEventListener('mouseup', updateButtonStates);
+        paper.addEventListener('mousedown', updateButtonStates);
+
+        function updateButtonStates() {
+            boldBtn.classList.toggle('active', document.queryCommandState('bold'));
+            italicBtn.classList.toggle('active', document.queryCommandState('italic'));
+            underlineBtn.classList.toggle('active', document.queryCommandState('underline'));
+        }
+
+        // Set initial focus
+        window.addEventListener('load', () => {
+            paper.focus();
+        });
+
+        // Keyboard shortcuts for formatting
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && !e.altKey) {
+                switch (e.key.toLowerCase()) {
+                    case 'b':
+                        e.preventDefault();
+                        boldBtn.click();
+                        break;
+                     case 'i':
+                        e.preventDefault();
+                        italicBtn.click();
+                        break;
+                    case 'u':
+                        e.preventDefault();
+                        underlineBtn.click();
+                        break;
+                    case 's':
+                        e.preventDefault(); // Prevent the default action (if any)
+                        document.getElementById('downloadButton').click(); // Trigger the download button click
+                        break;
+                }
+            }
+        });
+
+        // Settings menu functionality
+        settingsButton.addEventListener('click', () => {
+            settingsMenu.style.display = 'block';
+        });
+
+        closeSettings.addEventListener('click', () => {
+            settingsMenu.style.display = 'none';
+        });
+
+        highContrastMode.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.body.classList.add('high-contrast');
+            } else {
+                document.body.classList.remove('high-contrast');
+            }
+        });
+
+        fullscreenMode.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                document.body.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        showStatus.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                statusBar.style.display = 'block';
+            } else {
+                statusBar.style.display = 'none';
+            }
+        });
+
+        themeSelect.addEventListener('change', (e) => {
+            document.body.classList.remove('light-theme', 'dark-theme', 'sepia-theme');
+            switch (e.target.value) {
+                case 'light':
+                    document.body.classList.add('light-theme');
+                    themeLogo.src = themeLogo.dataset.lightSrc;
+                    break;
+                case 'dark':
+                    document.body.classList.add('dark-theme');
+                    themeLogo.src = themeLogo.dataset.darkSrc;
+                    break;
+                case 'sepia':
+                    document.body.classList.add('sepia-theme');
+                    themeLogo.src = themeLogo.dataset.sepiaSrc;
+                    break;
+            }
+        });
+
+        // Add battery monitoring
+        async function updateBattery() {
+            try {
+                if ('getBattery' in navigator) {
+                    const battery = await navigator.getBattery();
+                    const level = Math.floor(battery.level * 100);
+                    batteryLevel.textContent = `${level}%`;
+
+                    battery.addEventListener('levelchange', () => {
+                        const newLevel = Math.floor(battery.level * 100);
+                        batteryLevel.textContent = `${newLevel}%`;
+                    });
+                } else {
+                    batteryLevel.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Battery status not supported');
+                batteryLevel.style.display = 'none';
+            }
+        }
+
+        
+        // Update the updateStatusBar function
+        function updateStatusBar() {
+            const date = new Date();
+            currentTime.textContent = date.toLocaleTimeString();
+            currentDate.textContent = date.toLocaleDateString();
+            updateBattery();
+        }
+
+        // Call updateStatusBar immediately and then every second
+        updateStatusBar();
+        setInterval(updateStatusBar, 1000);
+
+        // Teachable Machine Integration
+        const URL = "https://teachablemachine.withgoogle.com/models/PO4u8Sp7H/";
+        let model, webcam, labelContainer, maxPredictions;
+        let cameraPermissionGranted = false;
+
+
+        // Centralized camera permission request function
+        async function requestCameraPermission() {
+            // Check if permission was already granted
+            if (cameraPermissionGranted) {
+                return true;
+            }
+
+            try {
+                // Modern method of requesting camera access
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    
+                    // Close the stream after checking
+                    stream.getTracks().forEach(track => track.stop());
+                    
+                    cameraPermissionGranted = true;
+                    console.log("Camera permission granted successfully");
+                    return true;
+                } else {
+                    throw new Error("Camera access not supported");
+                }
+            } catch (error) {
+                console.error("Camera Permission Error:", {
+                    name: error.name,
+                    message: error.message
+                });
+
+                // Provide user-friendly error message
+                let errorMessage = "Camera access failed. ";
+                switch (error.name) {
+                    case 'NotAllowedError':
+                        errorMessage += "Permission was denied. Please enable camera access in your browser settings.";
+                        break;
+                    case 'NotFoundError':
+                        errorMessage += "No camera found on this device.";
+                        break;
+                    default:
+                        errorMessage += "An unexpected error occurred.";
+                }
+
+                alert(errorMessage);
+                return false;
+            }
+        }
+
+        // Load the image model
+        async function init() {
+            try {
+                // Check camera permission first
+                const permissionGranted = await requestCameraPermission();
+                if (!permissionGranted) {
+                    throw new Error("Camera permission not granted");
+                }
+
+                const modelURL = URL + "model.json";
+                const metadataURL = URL + "metadata.json";
+
+                // Load the model and metadata
+                model = await tmImage.load(modelURL, metadataURL);
+                maxPredictions = model.getTotalClasses();
+
+                // Setup webcam
+                const flip = true;
+                webcam = new tmImage.Webcam(400, 400, flip);
+
+                // Comprehensive method checks
+                const requiredMethods = ['setup', 'play', 'update'];
+                const missingMethods = requiredMethods.filter(method => typeof webcam[method] !== 'function');
+                
+                if (missingMethods.length > 0) {
+                    throw new Error(`Missing webcam methods: ${missingMethods.join(', ')}`);
+                }
+
+                await webcam.setup();
+                await webcam.play();
+                window.requestAnimationFrame(loop);
+
+                // Move webcam canvas to container
+                const webcamContainer = document.getElementById('webcamContainer');
+                webcamContainer.appendChild(webcam.canvas);
+
+                // Create label container
+                labelContainer = document.createElement("div");
+                labelContainer.style.display = "none";
+                document.body.appendChild(labelContainer);
+                
+                for (let i = 0; i < maxPredictions; i++) {
+                    labelContainer.appendChild(document.createElement("div"));
+                }
+
+                console.log("Webcam initialization complete");
+            } catch (error) {
+                console.error('Webcam Initialization Error:', error);
+                
+                let errorMessage = "Webcam initialization failed. ";
+                errorMessage += error.message || "An unexpected error occurred.";
+                
+                alert(errorMessage);
+            }
+        }
+
+        function requestCameraAccess() {
+            return new Promise((resolve, reject) => {
+                // Try multiple methods of requesting camera access
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ video: true })
+                        .then(resolve)
+                        .catch(reject);
+                } else if (navigator.getUserMedia) {
+                    navigator.getUserMedia({ video: true }, resolve, reject);
+                } else if (navigator.webkitGetUserMedia) {
+                    navigator.webkitGetUserMedia({ video: true }, resolve, reject);
+                } else if (navigator.mozGetUserMedia) {
+                    navigator.mozGetUserMedia({ video: true }, resolve, reject);
+                } else {
+                    reject(new Error('getUserMedia is not supported in this browser'));
+                }
+            });
+        }
+
+        async function initTeachableMachine() {
+            try {
+                console.log("Starting Teachable Machine Initialization");
+                
+                // Log browser capabilities
+                console.log("Browser Capabilities:", {
+                    mediaDevices: !!navigator.mediaDevices,
+                    getUserMedia: !!navigator.getUserMedia,
+                    webkitGetUserMedia: !!navigator.webkitGetUserMedia,
+                    mozGetUserMedia: !!navigator.mozGetUserMedia
+                });
+
+                // Detailed URL logging
+                console.log("Model URLs:", {
+                    modelURL: URL + "model.json",
+                    metadataURL: URL + "metadata.json"
+                });
+
+                // Attempt to load model
+                const modelURL = URL + "model.json";
+                const metadataURL = URL + "metadata.json";
+                
+                console.log("Attempting to load model...");
+                model = await tmImage.load(modelURL, metadataURL);
+                console.log("Model loaded successfully");
+
+                maxPredictions = model.getTotalClasses();
+                console.log(`Total model classes: ${maxPredictions}`);
+
+                // Detailed webcam setup logging
+                console.log("Initializing webcam...");
+                const flip = true;
+                
+                // Extensive webcam initialization checks
+                webcam = new tmImage.Webcam(400, 400, flip);
+                console.log("Webcam object created:", !!webcam);
+                
+                console.log("Available webcam methods:", Object.keys(webcam));
+
+                // Comprehensive method checks
+                const requiredMethods = ['setup', 'play', 'update'];
+                const missingMethods = requiredMethods.filter(method => typeof webcam[method] !== 'function');
+                
+                if (missingMethods.length > 0) {
+                    throw new Error(`Missing webcam methods: ${missingMethods.join(', ')}`);
+                }
+
+                console.log("Attempting webcam setup...");
+                await webcam.setup();
+                
+                console.log("Attempting webcam play...");
+                await webcam.play();
+                
+                console.log("Starting animation loop...");
+                window.requestAnimationFrame(loop);
+
+                // Webcam canvas placement
+                const webcamContainer = document.getElementById('webcamContainer');
+                webcamContainer.appendChild(webcam.canvas);
+
+                // Label container setup
+                labelContainer = document.createElement("div");
+                labelContainer.style.display = "none";
+                document.body.appendChild(labelContainer);
+                
+                for (let i = 0; i < maxPredictions; i++) {
+                    labelContainer.appendChild(document.createElement("div"));
+                }
+
+                console.log("Teachable Machine Initialization Complete");
+            } catch (error) {
+                console.error("COMPREHENSIVE INITIALIZATION ERROR:", {
+                    name: error.name,
+                    message: error.message,
+                    stack: error.stack,
+                    fullError: error
+                });
+
+                // Detailed error messaging
+                let errorDetails = `Initialization Failed: ${error.message}\n\n`;
+                errorDetails += "Possible Reasons:\n";
+                errorDetails += "1. Camera permissions not granted\n";
+                errorDetails += "2. No camera detected\n";
+                errorDetails += "3. Browser compatibility issue\n";
+                errorDetails += "4. Network problem loading model\n";
+
+                alert(errorDetails);
+            }
+        }
+
+        async function loop() {
+            webcam.update();
+            await predict();
+            window.requestAnimationFrame(loop);
+        }
+
+        let noUserTimer = null;
+        let isLocked = false;
+        const LOCK_DELAY = 2500; // 2.5 seconds
+
+        async function predict() {
+            try {
+                const prediction = await model.predict(webcam.canvas);
+                
+                // Find the class with highest probability
+                let maxClass = prediction[0];
+                for (let i = 1; i < maxPredictions; i++) {
+                    if (prediction[i].probability > maxClass.probability) {
+                        maxClass = prediction[i];
+                    }
+                }
+
+                // Check if no user is detected
+                if (maxClass.className === "Locked" && maxClass.probability > 0.8) {
+                    if (!noUserTimer && !isLocked) {
+                        noUserTimer = setTimeout(() => {
+                            lockScreen();
+                        }, LOCK_DELAY);
+                    }
+                } else {
+                    // If user is detected, clear the timer and unlock if needed
+                    if (noUserTimer) {
+                        clearTimeout(noUserTimer);
+                        noUserTimer = null;
+                    }
+                    
+                    if (maxClass.className === "Unlocked" && maxClass.probability > 0.8) {
+                        unlockScreen();
+                    }
+                }
+
+                // Update labels (hidden but useful for debugging)
+                for (let i = 0; i < maxPredictions; i++) {
+                    const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+                    labelContainer.childNodes[i].innerHTML = classPrediction;
+                }
+            } catch (error) {
+                console.error('Prediction error:', error);
+            }
+        }
+
+        function lockScreen() {
+            if (!isLocked) {
+                isLocked = true;
+                const lockScreen = document.getElementById('lockScreen');
+                const editorContainer = document.querySelector('.editorContainer');
+                
+                lockScreen.classList.add('visible');
+                editorContainer.classList.add('hidden');
+
+                createCircles();
+
+                // Add a subtle shake animation to the lock icon
+                const lockIcon = lockScreen.querySelector('svg');
+                lockIcon.animate([
+                    { transform: 'rotate(-10deg)' },
+                    { transform: 'rotate(10deg)' },
+                    { transform: 'rotate(0deg)' }
+                ], {
+                    duration: 500,
+                    easing: 'cubic-bezier(0.36, 0, 0.66, -0.56)',
+                    iterations: 1
+                });
+            }
+        }
+
+        function unlockScreen() {
+            if (isLocked) {
+                isLocked = false;
+                const lockScreen = document.getElementById('lockScreen');
+                const editorContainer = document.querySelector('.editorContainer');
+                
+                lockScreen.classList.remove('visible');
+                editorContainer.classList.remove('hidden');
+
+                // Add unlock animation to the editor
+                editorContainer.animate([
+                    { transform: 'scale(0.95)', opacity: 0 },
+                    { transform: 'scale(1)', opacity: 1 }
+                ], {
+                    duration: 500,
+                    easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    iterations: 1
+                });
+            }
+        }
+
+        window.addEventListener('load', async () => {
+            // Initial locked state setup
+            const lockScreen = document.getElementById('lockScreen');
+            lockScreen.classList.add('visible');
+            document.querySelector('.editorContainer').classList.add('hidden');
+            isLocked = true;
+
+            // Create and start circle animations
+            createCircles();
+
+            // Recreate circles when window is resized
+            window.addEventListener('resize', createCircles);
+
+            try {
+                // Attempt to initialize camera and model
+                await init(); // This handles permission and initialization
+            } catch (error) {
+                console.error("Initialization Error:", error);
+                alert("Failed to initialize the application. Please reload or check your camera permissions.");
+            }
+        });
+
+        // Add event listener for visibility change
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (webcam) {
+                    webcam.stop();
+                }
+            } else {
+                if (webcam) {
+                    webcam.play();
+                }
+            }
+        });
+
+        // Add event listener for visibility change
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (webcam) {
+                    webcam.stop();
+                }
+            } else {
+                if (webcam) {
+                    webcam.play();
+                }
+            }
+        });
+
+        // circles in lock screen
+        function createCircles() {
+            const container = document.querySelector('.background-circles');
+            
+            // Calculate number of circles based on screen size and performance
+            const screenWidth = window.innerWidth * 1.75; // Added 1.75x modifier
+            const screenHeight = window.innerHeight;
+            const screenArea = screenWidth * screenHeight;
+
+            // Estimate performance based on number of logical processors
+            const processorCount = navigator.hardwareConcurrency || 4;
+            
+            // More sophisticated circle calculation
+            let numCircles = Math.floor(Math.pow(screenArea, 0.5) / 45); // Sqrt to reduce scaling
+            
+            // Processor contribution with diminishing returns
+            const processorBonus = Math.log(processorCount + 1) * 5;
+            numCircles += processorBonus;
+            
+            // Memory and CPU check for additional bonus
+            let performanceBonus = 0;
+            try {
+                // Check available memory (if supported)
+                if (navigator.deviceMemory) {
+                    performanceBonus += navigator.deviceMemory * 2;
+                }
+            } catch (e) {}
+            
+            numCircles += performanceBonus;
+
+            // More aggressive capping and randomness
+            const maxCircles = 150;
+            const randomFactor = Math.random() * 0.2 + 1; // 100-120% of calculated circles
+            
+            numCircles = Math.floor(numCircles * randomFactor);
+            numCircles = Math.max(20, Math.min(maxCircles, Math.round(numCircles)));
+
+            // Clear existing circles
+            container.innerHTML = '';
+
+            // Create new circles with more varied sizes and positions
+            for (let i = 0; i < numCircles; i++) {
+                const circle = document.createElement('div');
+                circle.className = 'circle';
+
+                // More varied size distribution (exponential-like)
+                const size = Math.pow(Math.random(), 2) * 300 + 50;
+                circle.style.width = `${size}px`; 
+                circle.style.height = `${size}px`; 
+
+                // Initial position 
+                moveCircleToRandomPosition(circle);
+
+                // Additional randomness in opacity and blur
+                circle.style.opacity = Math.random() * 0.5 + 0.2;
+                circle.style.filter = `blur(${Math.random() * 30 + 10}px)`;
+
+                container.appendChild(circle);
+            }
+
+            // Start animation loop 
+            animateCircles();
+
+            // Detailed logging for debugging
+            console.log(`Circles created: ${numCircles}`, {
+                screenSize: `${screenWidth}x${screenHeight}`,
+                processors: processorCount,
+                deviceMemory: navigator.deviceMemory || 'Unknown',
+                randomFactor: randomFactor
+            });
+        }
+
+        function moveCircleToRandomPosition(circle) {
+            const container = document.querySelector('.background-circles');
+            const maxX = container.offsetWidth - parseInt(circle.style.width);
+            const maxY = container.offsetHeight - parseInt(circle.style.height);
+
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+
+            circle.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+
+        function animateCircles() {
+            const circles = document.querySelectorAll('.circle');
+            
+            circles.forEach(circle => {
+                moveCircleToRandomPosition(circle);
+            });
+
+            // Move circles every 20 seconds
+            setTimeout(animateCircles, 20000);
+        }
+
+        // PDF Downloading Document
+        const downloadButton = document.querySelector('.downloadButton');
+        const pdfCustomizationMenu = document.querySelector('.pdfCustomizationMenu');
+        const closePdfCustomization = document.querySelector('.closePdfCustomization');
+        const generatePdfBtn = document.getElementById('generatePdfBtn');
+
+        downloadButton.addEventListener('click', () => {
+            pdfCustomizationMenu.style.display = 'block';
+        });
+
+        closePdfCustomization.addEventListener('click', () => {
+            pdfCustomizationMenu.style.display = 'none';
+        });
+
+        generatePdfBtn.addEventListener('click', generatePDF);
+
+        async function generatePDF() {
+            const textColor = document.getElementById('pdfTextColor').value;
+            const backgroundColor = document.getElementById('pdfBackgroundColor').value;
+            const fontSize = document.getElementById('pdfFontSize').value;
+
+            // Create a temporary div to render the content
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = paper.innerHTML;
+            tempDiv.style.color = textColor;
+            tempDiv.style.backgroundColor = backgroundColor;
+            tempDiv.style.fontSize = `${fontSize}px`;
+            tempDiv.style.padding = '20px';
+            tempDiv.style.width = '210mm'; // A4 width
+            tempDiv.style.minHeight = '297mm'; // A4 height
+            document.body.appendChild(tempDiv);
+
+            // Use html2canvas to capture the content as an image
+            const canvas = await html2canvas(tempDiv, {
+                scale: 2,
+                useCORS: true,
+                logging: false
+            });
+
+            // Remove the temporary div
+            document.body.removeChild(tempDiv);
+
+            // Create PDF
+            const imgData = canvas.toDataURL('image/jpeg', 1.0);
+            const pdf = new jspdf.jsPDF({
+                orientation: 'p',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+            const imgX = (pdfWidth - imgWidth * ratio) / 2;
+            const imgY = 30;
+
+            pdf.addImage(imgData, 'JPEG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+
+            // Get the document title or use a default
+            const title = document.querySelector('.paper h1') ? 
+                document.querySelector('.paper h1').textContent.trim() : 
+                'Document';
+
+            // Add title to the PDF
+            pdf.setFontSize(16);
+            pdf.setTextColor(0, 0, 0); // Black color for title
+            pdf.text(title, pdfWidth / 2, 20, { align: 'center' });
+
+            // Save the PDF
+            pdf.save(`${title}.pdf`);
+
+            // Close the PDF customization menu
+            pdfCustomizationMenu.style.display = 'none';
+        }
+
+        // Font Size Functionality
+        const fontSizeButton = document.querySelector('.fontSizeButton');
+        fontSizeButton.addEventListener('click', () => {
+            const currentSize = window.getComputedStyle(paper, null).getPropertyValue('font-size');
+            const newSize = parseFloat(currentSize) + 1;
+            paper.style.fontSize = `${newSize}px`;
+            fontSizeButton.textContent = `${newSize}`;
+        });
+
+        // Text Color Functionality
+        const primaryColor = document.querySelector('.primaryColor');
+        primaryColor.addEventListener('click', () => {
+            const color = window.getComputedStyle(primaryColor, null).getPropertyValue('background-color');
+            document.execCommand('foreColor', false, color);
+        });
+
+        // Highlighter Color Functionality
+        const secondaryColor = document.querySelector('.secondaryColor');
+        secondaryColor.addEventListener('click', () => {
+            const color = window.getComputedStyle(secondaryColor, null).getPropertyValue('background-color');
+            document.execCommand('hiliteColor', false, color);
+        });
+
+        // Font Type Functionality
+        const paintButton = document.querySelector('.paintButton');
+        paintButton.addEventListener('click', () => {
+            const fonts = ['Arial', 'Verdana', 'Times New Roman', 'Courier New', 'Georgia'];
+            const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
+            document.execCommand('fontName', false, randomFont);
+        });
+
+        window.addEventListener('load', createCircles);
+        window.addEventListener('resize', createCircles);
+    </script>
+</body>
+</html>

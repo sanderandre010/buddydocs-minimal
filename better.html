@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #10100A;
+            color: #E6EFDD;
+        }
+
+        .editorContainer {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logoContainer {
+            width: 72px;
+            height: 72px;
+            position: absolute;
+            left: 16px;
+            top: 16px;
+        }
+
+        .mainEditor {
+            width: 90%;
+            max-width: 1320px;
+            height: 90vh;
+            background: #13120F;
+            border-radius: 15px;
+            border: 1px #6A6862 solid;
+        }
+
+        .toolbarLeft, .toolbarRight {
+            width: 64px;
+            position: absolute;
+            left: 17px;
+            background: #28281D;
+            border-radius: 32px;
+        }
+
+        .toolbarLeft {
+            top: 112px;
+            height: 312px;
+        }
+
+        .toolbarRight {
+            bottom: 16px;
+            height: 192px;
+        }
+
+        .textFormatContainer {
+            width: 40px;
+            height: 100px;
+            position: absolute;
+            left: 12px;
+            top: 13px;
+            background: #534A33;
+            border-radius: 20px;
+        }
+
+        .colorPalette {
+            width: 40px;
+            height: 84px;
+            position: absolute;
+            left: 12px;
+            top: 169px;
+            background: #534A33;
+        }
+
+        .textFormatButtons {
+            position: absolute;
+            left: 23px;
+            top: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 200;
+        }
+
+        .toolButton {
+            width: 40px;
+            height: 40px;
+            position: absolute;
+            left: 12px;
+            background: #534A33;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: white;
+        }
+
+        .fontSizeButton { top: 121px; }
+        .paintButton { top: 261px; }
+
+        .colorPickerIcon {
+            width: 24px;
+            height: 24px;
+            position: absolute;
+            left: 20px;
+            top: 269px;
+        }
+
+        .actionButton {
+            position: absolute;
+            left: 12px;
+            text-align: center;
+            color: #FFEEAB;
+            font-size: 40px;
+        }
+
+        .settingsButton { bottom: 68px; }
+        .logoutButton { bottom: 12px; }
+        .downloadButton { bottom: 124px; }
+
+        .colorSwatch {
+            width: 32px;
+            height: 32px;
+            position: absolute;
+            left: 16px;
+            border-radius: 50%;
+        }
+
+        .primaryColor {
+            top: 173px;
+            background: white;
+        }
+
+        .secondaryColor {
+            top: 217px;
+            background: #6D6551;
+        }
+
+        @media (max-width: 768px) {
+            .toolbarLeft, .toolbarRight {
+                width: 48px;
+            }
+
+            .mainEditor {
+                width: 95%;
+            }
+
+            .textFormatContainer, .colorPalette, .toolButton, .actionButton {
+                left: 4px;
+            }
+
+            .textFormatButtons {
+                left: 15px;
+            }
+
+            .colorSwatch {
+                left: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="editorContainer">
+        <div class="logoContainer">
+            <img src="buddyicon.svg" alt="">
+        </div>
+        <div class="mainEditor" contenteditable="true"></div>
+        <div class="toolbarLeft">
+            <div class="textFormatContainer"></div>
+            <div class="textFormatButtons">B<br>I<br>U</div>
+            <div class="toolButton fontSizeButton">11</div>
+            <div class="colorPalette"></div>
+            <div class="colorSwatch primaryColor"></div>
+            <div class="colorSwatch secondaryColor"></div>
+            <div class="toolButton paintButton">
+                <span class="material-icons" style="font-size: 24px;">format_paint</span>
+            </div>
+        </div>
+        <div class="toolbarRight">
+            <div class="actionButton downloadButton material-icons">download</div>
+            <div class="actionButton settingsButton material-icons">settings</div>
+            <div class="actionButton logoutButton material-icons">logout</div>
+        </div>
+    </div>
+</body>
+</html>
