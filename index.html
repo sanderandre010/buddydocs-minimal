@@ -1,0 +1,2313 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buddy Docs - 0.3.9 BETA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script defer src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/simple-summarizer-js@1.0.0/dist/simple-summarizer.min.js"></script>
+    <style>
+        :root {
+            --text-color: #E6EFDD;
+            --background-color: #13120F;
+            --primary-color: #FFFFFF;
+            --secondary-color: #6D6551;
+            --toolbar-background: #28281D;
+            --toolbar-border: #6A6862;
+            --status-bar-background: rgba(40, 40, 29, 0.8);
+            --status-bar-text: #E6EFDD;
+            --separator-color: #6A6862;
+            --settings-menu-background: #28281D;
+            --settings-menu-text: #E6EFDD;
+            --settings-menu-select-background: #534A33;
+            --settings-menu-select-text: #E6EFDD;
+            --close-button-color: #FFEEAB;
+            --action-button-color: #FFEEAB;
+            --action-text-hovered-color: #FFEEAB;
+            --action-text-color: var(--text-color);
+            --tool-button-background: #534A33;
+            --tool-button-text: white;
+            --text-format-container-background: #534A33;
+            --color-palette-background: #534A33;
+            --primary-color-swatch: white;
+            --secondary-color-swatch: #6D6551;
+            --genSummaryText-color: #FFEEAB;
+            --border-selected-color: #3C8AFF;
+            --border-hover-color: #8989dbbf;
+            --main-editor-background: var(--background-color);
+        }
+
+        .light-theme {
+            --text-color: #333;
+            --background-color: #F5F5F5;
+            --primary-color: #000000;
+            --secondary-color: #CCCCCC;
+            --toolbar-background: #DDD;
+            --toolbar-border: #CCC;
+            --status-bar-background: rgba(220, 220, 220, 0.8);
+            --status-bar-text: #333;
+            --separator-color: #CCC;
+            --settings-menu-background: #DDD;
+            --settings-menu-text: #333;
+            --settings-menu-select-background: #CCC;
+            --settings-menu-select-text: #333;
+            --close-button-color: #4E4419;
+            --action-button-color: #413C37;
+            --action-text-hovered-color: #413C37;
+            --action-text-color: var(--text-color);
+            --tool-button-background: #CCC;
+            --tool-button-text: #333;
+            --text-format-container-background: #CCC;
+            --color-palette-background: #CCC;
+            --primary-color-swatch: #000000;
+            --secondary-color-swatch: #CCCCCC;
+            --genSummaryText-color: #7c7c4e;
+            --border-selected-color: #0055d4;
+            --border-hover-color: #2a78eebf;
+            --main-editor-background: var(--background-color);
+        }
+
+        .preppy-theme {
+            --text-color: #333;
+            --background-color: #F4ECD8;
+            --primary-color: #FF69B4;
+            --secondary-color: #FFB6C1;
+            --toolbar-background: #FFD1DC;
+            --toolbar-border: #FF69B4;
+            --status-bar-background: rgba(255, 182, 193, 0.8);
+            --status-bar-text: #333;
+            --separator-color: #FF69B4;
+            --settings-menu-background: #FFD1DC;
+            --settings-menu-text: #333;
+            --settings-menu-select-background: #FFB6C1;
+            --settings-menu-select-text: #333;
+            --close-button-color: #FF69B4;
+            --action-button-color: #FF69B4;
+            --action-text-hovered-color: #FF69B4;
+            --action-text-color: var(--text-color);
+            --tool-button-background: #FFB6C1;
+            --tool-button-text: #333;
+            --text-format-container-background: #FFB6C1;
+            --color-palette-background: #FFB6C1;
+            --primary-color-swatch: #FF69B4;
+            --secondary-color-swatch: #FFB6C1;
+            --genSummaryText-color: #FF69B4;
+            --border-selected-color: #FF69B4;
+            --border-hover-color: #FFB6C1;
+            --main-editor-background: var(--background-color);
+        }
+
+        .high-contrast {
+            --text-color: #ffffff;
+            --background-color: #000000;
+            --primary-color: #000000;
+            --secondary-color: #FFFFFF;
+            --toolbar-background: #000000;
+            --toolbar-border: #FFFFFF;
+            --status-bar-background: rgba(0, 0, 0, 0.8);
+            --status-bar-text: #FFFFFF;
+            --separator-color: #FFFFFF;
+            --settings-menu-background: #050505;
+            --settings-menu-text: #FFFFFF;
+            --settings-menu-select-background: #e2e2e2;
+            --settings-menu-select-text: #353535;
+            --close-button-color: #FFFFFF;
+            --action-button-color: #FFFFFF;
+            --action-text-hovered-color: #000000;
+            --action-text-color: #000000;
+            --tool-button-background: #eeeeee;
+            --tool-button-text: #111111;
+            --text-format-container-background: #eeeeee;
+            --color-palette-background: #eeeeee;
+            --primary-color-swatch: #353535;
+            --secondary-color-swatch: #000000;
+            --genSummaryText-color: #FFFFFF;
+            --border-selected-color: #FFFFFF;
+            --border-hover-color: #FFFFFF;
+            --main-editor-background: var(--background-color);
+        }
+
+        .theme-cat1 {
+            background-image: url('cat1.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .theme-cat2 {
+            background-image: url('cat2.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .theme-cat3 {
+            background-image: url('cat3.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .cat1-theme {
+            --text-color: #E6EFDD;
+            --background-color: #13120F;
+            --primary-color: #FFFFFF;
+            --secondary-color: #6D6551;
+            --toolbar-background: #28281D;
+            --toolbar-border: #6A6862;
+            --status-bar-background: rgba(40, 40, 29, 0.8);
+            --status-bar-text: #E6EFDD;
+            --separator-color: #6A6862;
+            --settings-menu-background: #28281D;
+            --settings-menu-text: #E6EFDD;
+            --settings-menu-select-background: #534A33;
+            --settings-menu-select-text: #E6EFDD;
+            --close-button-color: #FFEEAB;
+            --action-button-color: #FFEEAB;
+            --action-text-hovered-color: #FFEEAB;
+            --action-text-color: var(--text-color);
+            --tool-button-background: #534A33;
+            --tool-button-text: white;
+            --text-format-container-background: #534A33;
+            --color-palette-background: #534A33;
+            --primary-color-swatch: white;
+            --secondary-color-swatch: #6D6551;
+            --genSummaryText-color: #FFEEAB;
+            --border-selected-color: #3C8AFF;
+            --border-hover-color: #8989dbbf;
+            --main-editor-background: url('3.9.6+catthemeimages/cat-theme-dark.png');
+        }
+
+        .cat2-theme {
+            --text-color: #333;
+            --background-color: #F5F5F5;
+            --primary-color: #000000;
+            --secondary-color: #CCCCCC;
+            --toolbar-background: #DDD;
+            --toolbar-border: #CCC;
+            --status-bar-background: rgba(220, 220, 220, 0.8);
+            --status-bar-text: #333;
+            --separator-color: #CCC;
+            --settings-menu-background: #DDD;
+            --settings-menu-text: #333;
+            --settings-menu-select-background: #CCC;
+            --settings-menu-select-text: #333;
+            --close-button-color: #4E4419;
+            --action-button-color: #413C37;
+            --action-text-hovered-color: #413C37;
+            --action-text-color: var(--text-color);
+            --tool-button-background: #CCC;
+            --tool-button-text: #333;
+            --text-format-container-background: #CCC;
+            --color-palette-background: #CCC;
+            --primary-color-swatch: #000000;
+            --secondary-color-swatch: #CCCCCC;
+            --genSummaryText-color: #7c7c4e;
+            --border-selected-color: #0055d4;
+            --border-hover-color: #2a78eebf;
+            --main-editor-background: url('3.9.6+catthemeimages/cat-theme-light.png');
+        }
+
+        .cat3-theme {
+            --text-color: #333;
+            --background-color: #F4ECD8;
+            --primary-color: #FF69B4;
+            --secondary-color: #FFB6C1;
+            --toolbar-background: #FFD1DC;
+            --toolbar-border: #FF69B4;
+            --status-bar-background: rgba(255, 182, 193, 0.8);
+            --status-bar-text: #333;
+            --separator-color: #FF69B4;
+            --settings-menu-background: #FFD1DC;
+            --settings-menu-text: #333;
+            --settings-menu-select-background: #FFB6C1;
+            --settings-menu-select-text: #333;
+            --close-button-color: #FF69B4;
+            --action-button-color: #FF69B4;
+            --action-text-hovered-color: #FF69B4;
+            --action-text-color: var(--text-color);
+            --tool-button-background: #FFB6C1;
+            --tool-button-text: #333;
+            --text-format-container-background: #FFB6C1;
+            --color-palette-background: #FFB6C1;
+            --primary-color-swatch: #FF69B4;
+            --secondary-color-swatch: #FFB6C1;
+            --genSummaryText-color: #FF69B4;
+            --border-selected-color: #FF69B4;
+            --border-hover-color: #FFB6C1;
+            --main-editor-background: url('3.9.6+catthemeimages/cat-theme-preppy.png');
+        }
+
+        body, html { 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Inter', sans-serif; 
+            background: var(--background-color); 
+            color: var(--text-color); 
+            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+        } 
+
+        .editorContainer {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logoContainer {
+            width: 72px;
+            height: 72px;
+            position: absolute;
+            left: 16px;
+            top: 16px;
+        }
+
+        .mainEditor { 
+            width: 95%; 
+            max-width: 1320px; 
+            height: 95vh; 
+            background: var(--main-editor-background);
+            background-position: center; 
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 15px; 
+            border: 1px var(--toolbar-border) solid; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            position: relative; 
+            transition: all 0.5s ease-in-out;
+        } 
+        .paper { 
+            width: 100%; 
+            height: 100%; 
+            outline: none; 
+            font-family: 'Inter', sans-serif; 
+            font-size: 16px; 
+            line-height: 1.5; 
+            color: var(--text-color); 
+            overflow-y: auto; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            transition: color 0.5s ease-in-out;
+        } 
+
+        .paper h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .paper h2 {
+            font-size: 2em;
+            margin-bottom: 0.5em;
+        }
+
+        .paper h3 {
+            font-size: 1.75em;
+            margin-bottom: 0.5em;
+        }
+
+        .paper h4 {
+            font-size: 1.5em;
+            margin-bottom: 0.4em;
+        }
+        
+        .paper h5 {
+            font-size: 1.25em;
+            margin-bottom: 0.4em;
+            font-weight: lighter;
+        }
+
+        .paper h6 {
+            font-size: 1.1em;
+            margin-bottom: 0.3em;
+            font-weight: lighter;
+        }
+
+        .paper p {
+            margin-bottom: 1em;
+        }
+
+        .paper img {
+            margin: 8px 16px;
+            height: 0.5fr;
+            border-radius: 12px;
+        }
+
+        .toolbarLeft, .toolbarRight { 
+            width: 64px; 
+            position: absolute; 
+            left: 17px; 
+            background: var(--toolbar-background); 
+            border-radius: 32px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding: 12px 0; 
+            box-sizing: border-box; 
+            transition: background 0.3s ease-in-out;
+        } 
+
+        .toolbarLeft {
+            top: 112px;
+            height: 360px;
+        }
+
+        .toolbarRight {
+            bottom: 16px;
+            height: 192px;
+        }
+
+        .textFormatContainer {
+            width: 40px;
+            height: 120px;
+            background: var(--text-format-container-background);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .textFormatButtons {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .textFormatButtons span {
+            color: var(--action-text-color); 
+            font-size: 20px;
+            font-weight: 400;
+            cursor: pointer;
+            transition: color 0.2s;
+            margin: 4px 0;
+        }
+
+        .textFormatButtons span:hover, .textFormatButtons span.active {
+            color: var(--action-text-hovered-color); 
+            transition: color 0.3s ease-in-out;
+            font-weight: 600;
+        } 
+
+        .toolButton {
+            width: 40px;
+            height: 40px;
+            background: var(--tool-button-background);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            color: var(--tool-button-text);
+            margin: 8px 0;
+            cursor: pointer;
+        }
+
+        .paintButton {
+            margin-bottom: 0 !important;
+        }
+
+        .colorPalette {
+            width: 40px;
+            height: 84px;
+            background: var(--color-palette-background);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        .colorSwatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .primaryColor {
+            background: var(--primary-color-swatch);
+        }
+
+        .secondaryColor {
+            background: var(--secondary-color-swatch);
+        }
+
+        .actionButton { 
+            color: var(--action-button-color);
+            font-size: 32px; 
+            cursor: pointer; 
+            margin: 12px 0; 
+            transition: transform 0.3s ease-in-out;
+        } 
+
+        .actionButton:hover { 
+            transform: scale(1.1);
+        } 
+
+        .settingsMenu h2 {
+            margin-top: 0;
+            color: var(--action-button-color);
+            margin-bottom: 20px;
+        }
+
+        .settingsMenu label {
+            display: block;
+            margin: 15px 0;
+            color: var(--settings-menu-text);
+            cursor: pointer;
+        }
+
+        .settingsMenu select {
+            margin-top: 5px;
+            background: var(--settings-menu-select-background);
+            border: none;
+            padding: 8px;
+            color: var(--settings-menu-select-text);
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .closeSettings {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            color: var(--close-button-color);
+        }
+
+        .statusBar {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: var(--status-bar-background);
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .separator {
+            margin: 0 10px;
+            color: var(--separator-color);
+        }
+
+        #lockScreen { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background-color: black; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            z-index: 9999; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+            pointer-events: none;
+        }
+
+        #lockScreen.visible {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        .background-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(51, 48, 250, 0.25);
+            /*backdrop-filter: blur(10px);*/ /* REMOVED CUZ OF LAG*/
+            transition: all 20s linear;
+            filter: blur(20px);
+        }
+
+        .lock-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            row-gap: 16px;
+        }
+
+        #lockScreen img {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 20px;
+            transform: scale(0);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        #lockScreen.visible img {
+            transform: scale(1);
+        }
+
+        #lockScreen p {
+            font-size: 24px;
+            color: white;
+            margin: 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        #lockScreen.visible p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .editorContainer { 
+            opacity: 1; 
+            transform: scale(1); 
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        } 
+
+        .editorContainer.hidden { 
+            opacity: 0; 
+            transform: scale(0.95); 
+        } 
+
+        #webcamContainer {
+            position: fixed;
+            top: -10px;
+            left: -10px;
+            width: 20px;
+            height: 20px;
+            opacity: 0.01;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        #webcamContainer canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pdfCustomizationMenu {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--settings-menu-background);
+            border-radius: 15px;
+            padding: 30px;
+            z-index: 1000;
+            display: none;
+            min-width: 300px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .pdfCustomizationMenu h2 {
+            margin-top: 0;
+            color: var(--action-button-color);
+            margin-bottom: 20px;
+        }
+
+        .pdfCustomizationMenu label {
+            display: block;
+            margin: 15px 0;
+            color: var(--settings-menu-text);
+        }
+
+        .pdfCustomizationMenu input {
+            margin-top: 5px;
+            background: var(--settings-menu-select-background);
+            border: none;
+            padding: 8px;
+            color: var(--settings-menu-select-text);
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .closePdfCustomization {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+            color: var(--close-button-color);
+        }
+
+        #generatePdfBtn {
+            background: var(--action-button-color);
+            color: var(--settings-menu-background);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+      
+        .blinktext {
+            display: inline-block;
+            animation: blink 1s steps(4) infinite; 
+            vertical-align: middle; 
+            color: #FF4242;
+            text-rendering: optimizeLegibility;
+        }
+
+      
+        @keyframes blink {
+            0%, 100% {
+                opacity: 1;
+            }
+            40%, 60% {
+                opacity: 0.2;
+            }
+        }
+
+        .genSummaryText {
+            color: var(--action-button-color);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .themeLogo {
+            max-width: 72px;
+            max-height: 72px;
+        }
+
+        .settingsMenu {
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            right: 5%;
+            bottom: 5%;
+            background: var(--settings-menu-background);
+            border-radius: 15px;
+            padding: 30px;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            display: flex;
+            box-sizing: border-box;
+            transition: opacity 0.5s ease-in-out;
+            display: none;
+            overflow: auto;
+        }
+
+        .settingsMenu.active {
+            display: flex;
+        }
+
+        .settings-tabs {
+            width: 200px;
+            padding-right: 20px;
+            border-right: 1px solid var(--separator-color);
+        }
+
+        .tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            background: var(--settings-menu-background);
+            color: var(--settings-menu-text);
+            border-radius: 5px 0 0 5px;
+        }
+
+        .tab.active {
+            background: var(--settings-menu-select-background);
+            color: var(--settings-menu-select-text);
+            font-weight: 800;
+        }
+
+        .settings-content {
+            flex: 1;
+            padding-left: 20px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .closeSettings {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: var(--close-button-color);
+        }
+
+        #countMenu {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--settings-menu-background);
+            padding: 20px;
+            border-radius: 10px;
+            color: var(--settings-menu-text);
+            z-index: 1000;
+        }
+
+        #closeCountMenu {
+            background-color: var(--color-palette-background);
+            color: var(--action-button-color);
+            border-radius: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .toolbarLeft, .toolbarRight {
+                width: 48px;
+                left: 8px;
+            }
+
+            .mainEditor {
+                width: 95%;
+                padding: 20px;
+            }
+
+            .textFormatContainer, .colorPalette, .toolButton {
+                width: 36px;
+            }
+
+            .textFormatButtons span {
+                font-size: 18px;
+                font-weight: 200;
+            }
+
+            .colorSwatch {
+                width: 28px;
+                height: 28px;
+            }
+
+            .actionButton {
+                font-size: 28px;
+            }
+        }
+
+        .theme-box {
+            width: 100%;
+            height: 72px;
+            border-radius: 12px;
+            display: inline-block;
+            cursor: pointer;
+            margin: 10px 10px 10px 0;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            box-shadow: inset 0 0 0 2px transparent;
+        }
+
+        .theme-box:hover {
+            transform: scale(1.01);
+            box-shadow: inset 0 0 0 4px var(--border-hover-color);
+        }
+
+        .theme-box.active {
+            box-shadow: inset 0 0 0 6px var(--border-selected-color);
+        }
+
+        .theme-dark {
+            background-color: #13120F;
+        }
+
+        .theme-light {
+            background-color: #F5F5F5;
+        }
+
+        .theme-preppy {
+            background-color: #FFBFFC;
+        }
+
+        .theme-cat1 {
+            background-color: #13120F;
+        }
+
+        .theme-cat2 {
+            background-color: #F5F5F5;
+        }
+
+        .theme-cat3 {
+            background-color: #FFBFFC;
+        }
+
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .high-contrast .toolbarLeft, .high-contrast .toolbarRight, .high-contrast .settingsMenu, .high-contrast .pdfCustomizationMenu, .high-contrast .statusBar {
+            border: 1px solid #FFFFFF;
+        }
+
+        .add-theme-button {
+            background-color: blue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .add-theme-button .material-icons {
+            margin-right: 8px;
+        }
+
+        .custom-theme-box {
+            background-color: var(--background-color);
+            border: 1px solid var(--border-selected-color);
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .delete-theme-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .theme-editor {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--settings-menu-background);
+            border-radius: 15px;
+            padding: 30px;
+            z-index: 1000;
+            min-width: 300px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .theme-editor h2 {
+            margin-top: 0;
+            color: var(--action-button-color);
+            margin-bottom: 20px;
+        }
+
+        .theme-editor label {
+            display: block;
+            margin: 15px 0;
+            color: var(--settings-menu-text);
+        }
+
+        .theme-editor input {
+            margin-top: 5px;
+            background: var(--settings-menu-select-background);
+            border: none;
+            padding: 8px;
+            color: var(--settings-menu-select-text);
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .theme-editor button {
+            background: var(--action-button-color);
+            color: var(--settings-menu-background);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-right: 10px;
+        }
+
+        .theme-preview {
+            margin-top: 20px;
+            border: 1px solid var(--border-selected-color);
+            border-radius: 10px;
+            padding: 10px;
+            background: var(--background-color);
+        }
+
+        .preview-mainEditor {
+            width: 100%;
+            height: 200px;
+            background: var(--background-color);
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .preview-paper {
+            width: 100%;
+            height: 100%;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-color);
+            overflow-y: auto;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .preview-paper h1 {
+            font-size: 1.5em;
+            margin-bottom: 0.5em;
+        }
+
+        .preview-paper p {
+            margin-bottom: 1em;
+        }
+
+        .theme-album {
+            background-color: var(--separator-color);
+            border-radius: 16px;
+            padding-left: 10px; 
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Lock Screen -->
+    <div id="lockScreen">
+        <div class="background-circles">
+            <!-- skibidi js moment here -->
+        </div>
+        <div class="lock-content">
+            <img src="buddyicon.lockscreen.svg" alt="Icon not found (lol)">
+            <p>Currently writing: How AI in Buddy Docs works</p>
+        </div>
+    </div>
+
+    <div class="pdfCustomizationMenu">
+        <span class="closePdfCustomization material-icons">close</span>
+        <h2>PDF Customization</h2>
+        <label>
+            Text Color:
+            <input type="color" id="pdfTextColor" value="#E6EFDD">
+        </label>
+        <label>
+            Background Color:
+            <input type="color" id="pdfBackgroundColor" value="#13120F">
+        </label>
+        <label>
+            Font Size:
+            <input type="number" id="pdfFontSize" min="8" max="24" value="12">
+        </label>
+        <button id="generatePdfBtn">Generate PDF</button>
+    </div>
+
+    <!-- Webcam Container -->
+    <div id="webcamContainer"></div>
+
+    <div class="editorContainer">
+        <div id="countMenu">
+            <p>Word Count: <span id="wordCount"></span></p>
+            <p>Character Count: <span id="charCount"></span></p>
+            <p>Paragraph Count: <span id="paraCount"></span></p>
+            <button id="closeCountMenu">Close</button>
+        </div>
+
+        <div class="logoContainer">
+            <img src="buddyicon.svg" alt="" class="themeLogo" data-dark-src="buddyicon.svg" data-light-src="buddyicon.premium.svg" data-preppy-src="buddyicon.preppy.svg">
+        </div>
+        <div class="mainEditor">
+            <div class="paper" contenteditable="true" spellcheck="false">
+                <h1>buddy docs!!!</h1>
+                <span class="blinktext"><p>WE WILL RELEASE THE NO AI VERSION FIRST AT Q2 2025!!!</p></span>
+            </div>
+        </div>
+        <div class="toolbarLeft">
+            <div class="textFormatContainer">
+                <div class="textFormatButtons">
+                    <span id="boldBtn">B</span>
+                    <span id="italicBtn">I</span>
+                    <span id="underlineBtn">U</span>
+                </div>
+            </div>
+            <div class="toolButton fontSizeButton">11</div>
+            <div class="colorPalette">
+                <div class="colorSwatch primaryColor"></div>
+                <div class="colorSwatch secondaryColor"></div>
+            </div>
+            <div class="toolButton paintButton">
+                <span class="material-icons" style="font-size: 20px;">format_paint</span>
+            </div>
+        </div>
+        <div class="toolbarRight">
+            <div id="downloadButton" class="actionButton downloadButton material-icons">download</div>
+            <div class="actionButton settingsButton material-icons">settings</div>
+            <div class="actionButton logoutButton material-icons">home</div>
+        </div>
+        <div class="settingsMenu">
+            <span class="closeSettings material-icons">close</span>
+            <div class="settings-tabs">
+                <div class="tab" data-tab="general">General</div>
+                <div class="tab" data-tab="themes">Themes</div>
+                <div class="tab" data-tab="accessibility">Accessibility</div>
+                <div class="tab" data-tab="about">About</div>
+            </div>
+            <div class="settings-content">
+                <div class="tab-content general-tab active">
+                    <h2>General</h2>
+                    <label>
+                        <input type="checkbox" id="fullscreenMode"> Fullscreen
+                    </label>
+                    <label>
+                        <input type="checkbox" id="showStatus"> Show Status while writing
+                    </label>
+                    <label>
+                        <input type="checkbox" id="disableFaceID"> Disable Face ID
+                    </label>
+                </div>
+                <div class="tab-content themes-tab">
+                    <h2>Themes</h2>
+                    <div class="theme-grid">
+                        <div class="theme-box theme-dark" data-theme="dark"></div>
+                        <div class="theme-box theme-light" data-theme="light"></div>
+                        <div class="theme-box theme-preppy" data-theme="preppy"></div>
+                    </div>
+                    <hr>
+                    <h3>Cat Album</h3>
+                    <div class="theme-grid theme-album">
+                        <div class="theme-box theme-cat1" data-theme="cat1"></div>
+                        <div class="theme-box theme-cat2" data-theme="cat2"></div>
+                        <div class="theme-box theme-cat3" data-theme="cat3"></div>
+                    </div>
+                    <hr>
+                    <h3>Custom Themes (Alpha)</h3>
+                    <p style="color: #FF0000; background-color: #1b0c0c; padding: 1.5rem; border-radius: 8px; box-shadow: inset 0px -8px 64px 0px rgba(226, 0, 0, 0.25);">This feature has been detected with bugs which interupt with the Dark Theme, expect to see bugs when switching back to dark theme. You might also see that not everything can be currently changed, and that uploaded images don't save yet. We are currently working on fixing these problems, so be patient.</p>
+                    <div id="customThemesContainer"></div>
+                    <button id="addThemeButton" class="add-theme-button">
+                        <span class="material-icons">add</span> Add Theme
+                    </button>
+                </div>
+                <div class="tab-content accessibility-tab">
+                    <h2>Accessibility</h2>
+                    <label>
+                        <input type="checkbox" id="highContrastMode"> High Contrast Mode
+                    </label>
+                </div>
+                <div class="tab-content about-tab">
+                    <h1>Buddy Docs</h1>
+                    <h2>Version: Wires - 0.3.9 BETA</h2>
+                    <p>Made with ❤ from LoaBeepo</p>
+                    <p>(and all of you using this app)</p>
+                </div>
+            </div>
+        </div>
+        <div class="statusBar">
+            <span id="batteryLevel">100%</span>
+            <span class="separator">|</span>
+            <span id="currentTime">12:00 PM</span>
+            <span class="separator"> </span>
+            <span id="currentDate">2024-10-30</span>
+        </div>
+    </div>
+
+    <div id="themeEditor" class="theme-editor">
+        <h2>Create Custom Theme</h2>
+        <label>
+            Theme Name:
+            <input type="text" id="themeNameInput">
+        </label>
+        <label>
+            Text Color:
+            <input type="color" id="themeTextColor" value="#333333">
+        </label>
+        <label>
+            Background Color:
+            <input type="color" id="themeBackgroundColor" value="#F5F5F5">
+        </label>
+        <label>
+            Primary Color:
+            <input type="color" id="themePrimaryColor" value="#000000">
+        </label>
+        <label>
+            Secondary Color:
+            <input type="color" id="themeSecondaryColor" value="#CCCCCC">
+        </label>
+        <label>
+            Toolbar Background:
+            <input type="color" id="themeToolbarBackground" value="#DDDDDD">
+        </label>
+        <label>
+            Toolbar Border:
+            <input type="color" id="themeToolbarBorder" value="#CCCCCC">
+        </label>
+        <label>
+            Main Editor Background Color:
+            <input type="color" id="mainEditorBackgroundColor" value="#FFFFFF">
+        </label>
+        <label>
+            Main Editor Background Image:
+            <input type="file" id="mainEditorBackgroundImage" accept="image/*">
+        </label>
+        <button id="previewThemeButton">Preview</button>
+        <button id="saveThemeButton">Save</button>
+        <button id="cancelThemeButton">Cancel</button>
+        <div id="themePreview" class="theme-preview">
+            <div class="preview-mainEditor">
+                <div class="preview-paper">
+                    <h1>Preview Title</h1>
+                    <p>This is a preview of your custom theme.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const paper = document.querySelector('.paper');
+        const themeLogo = document.querySelector('.themeLogo');
+        const boldBtn = document.getElementById('boldBtn');
+        const italicBtn = document.getElementById('italicBtn');
+        const underlineBtn = document.getElementById('underlineBtn');
+        const settingsButton = document.querySelector('.settingsButton');
+        const settingsMenu = document.querySelector('.settingsMenu');
+        const closeSettings = document.querySelector('.closeSettings');
+        const tabs = document.querySelectorAll('.settings-tabs .tab');
+        const contents = document.querySelectorAll('.settings-content .tab-content');
+        const highContrastMode = document.getElementById('highContrastMode');
+        const fullscreenMode = document.getElementById('fullscreenMode');
+        const showStatus = document.getElementById('showStatus');
+        const themeSelect = document.getElementById('themeSelect');
+        const statusBar = document.querySelector('.statusBar');
+        const batteryLevel = document.getElementById('batteryLevel');
+        const currentTime = document.getElementById('currentTime');
+        const currentDate = document.getElementById('currentDate');
+        const editor = document.querySelector('.paper');
+        boldBtn.addEventListener('click', () => {
+            document.execCommand('bold', false, null);
+            boldBtn.classList.toggle('active');
+        });
+        italicBtn.addEventListener('click', () => {
+            document.execCommand('italic', false, null);
+            italicBtn.classList.toggle('active');
+        });
+        underlineBtn.addEventListener('click', () => {
+            document.execCommand('underline', false, null);
+            underlineBtn.classList.toggle('active');
+        });
+        document.getElementById('boldBtn').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+        document.getElementById('italicBtn').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+        document.getElementById('underlineBtn').addEventListener('click', function() {
+            this.classList.toggle('active');
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.altKey) {
+                switch (e.key) {
+                    case '1':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h1>'); break;
+                    case '2':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h2>'); 
+                        break;
+                    case '3':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h3>'); 
+                        break;
+                    case '4':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h4>'); 
+                        break;
+                    case '5':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h5>'); 
+                        break;
+                    case '6':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<h6>'); 
+                        break;
+                    case '0':
+                        e.preventDefault();
+                        document.execCommand('formatBlock', false, '<p>'); 
+                        break;
+                }
+            }
+        });
+        document.addEventListener('keydown', (event) => {
+            if (event.ctrlKey && event.key === 'p') {
+                event.preventDefault(); 
+                const content = document.querySelector('.mainEditor').innerHTML;
+                const printWindow = window.open('', '', 'height=600,width=800');
+                printWindow.document.write('<html><head><title>Print</title>');
+                printWindow.document.write('</head><body>');
+                printWindow.document.write(content); 
+                printWindow.document.write('</body></html>');
+                printWindow.document.close(); 
+                printWindow.focus(); 
+                printWindow.print();
+                printWindow.close(); 
+            }
+        });
+        paper.addEventListener('keyup', updateButtonStates);
+        paper.addEventListener('mouseup', updateButtonStates);
+        paper.addEventListener('mousedown', updateButtonStates);
+        function updateButtonStates() {
+            boldBtn.classList.toggle('active', document.queryCommandState('bold'));
+            italicBtn.classList.toggle('active', document.queryCommandState('italic'));
+            underlineBtn.classList.toggle('active', document.queryCommandState('underline'));
+        }
+        window.addEventListener('load', () => {
+            paper.focus();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && !e.altKey) {
+                switch (e.key.toLowerCase()) {
+                    case 'b':
+                        e.preventDefault();
+                        boldBtn.click();
+                        break;
+                     case 'i':
+                        e.preventDefault();
+                        italicBtn.click();
+                        break;
+                    case 'u':
+                        e.preventDefault();
+                        underlineBtn.click();
+                        break;
+                    case 's':
+                        e.preventDefault(); 
+                        document.getElementById('downloadButton').click(); 
+                        break;
+                }
+            }
+        });
+        settingsButton.addEventListener('click', () => {
+            settingsMenu.classList.add('active');
+        });
+        closeSettings.addEventListener('click', () => {
+            settingsMenu.classList.remove('active');
+        });
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                console.log('Tab clicked:', tab.getAttribute('data-tab'));
+                const target = tab.getAttribute('data-tab');
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                contents.forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.querySelector(`.tab-content.${target}-tab`).classList.add('active');
+            });
+        });
+        tabs[0].click();
+        highContrastMode.addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+            saveSettings('highContrastMode', isChecked);
+            if (isChecked) {
+                document.body.classList.add('high-contrast');
+            } else {
+                document.body.classList.remove('high-contrast');
+            }
+        });
+        fullscreenMode.addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+            saveSettings('fullscreen', isChecked);
+            if (isChecked) {
+                document.body.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        });
+        showStatus.addEventListener('change', (e) => {
+            const isChecked = e.target.checked;
+            saveSettings('showStatus', isChecked);
+            statusBar.style.display = isChecked ? 'block' : 'none';
+        });
+        document.querySelectorAll('.theme-box').forEach(box => {
+            box.addEventListener('click', (e) => {
+                const selectedTheme = e.target.getAttribute('data-theme');
+                saveSettings('theme', selectedTheme);
+                document.body.classList.remove('light-theme', 'dark-theme', 'preppy-theme', 'high-contrast', 'cat1-theme', 'cat2-theme', 'cat3-theme');
+                document.querySelectorAll('.theme-box').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                switch (selectedTheme) {
+                    case 'light':
+                        document.body.classList.add('light-theme');
+                        themeLogo.src = themeLogo.dataset.lightSrc;
+                        break;
+                    case 'dark':
+                        document.body.classList.add('dark-theme');
+                        themeLogo.src = themeLogo.dataset.darkSrc;
+                        break;
+                    case 'preppy':
+                        document.body.classList.add('preppy-theme');
+                        themeLogo.src = themeLogo.dataset.preppySrc;
+                        break;
+                    case 'cat1':
+                        document.body.classList.add('cat1-theme');
+                        break;
+                    case 'cat2':
+                        document.body.classList.add('cat2-theme');
+                        break;
+                    case 'cat3':
+                        document.body.classList.add('cat3-theme');
+                        break;
+                }
+                updateLogoBasedOnEvents();
+            });
+        });
+        function applyCatTheme(theme) {
+            document.body.classList.remove('light-theme', 'dark-theme', 'preppy-theme', 'high-contrast');
+            document.body.style.backgroundImage = `url('${theme}.jpg')`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center';
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = loadSettings('theme', 'dark');
+            const savedFullscreen = loadSettings('fullscreen', false);
+            const savedShowStatus = loadSettings('showStatus', false);
+            const savedFaceIDDisabled = loadSettings('disableFaceID', false);
+            const savedHighContrast = loadSettings('highContrastMode', false);
+            document.body.classList.remove('light-theme', 'dark-theme', 'preppy-theme', 'high-contrast');
+            document.querySelectorAll('.theme-box').forEach(box => {
+                if (box.getAttribute('data-theme') === savedTheme) {
+                    box.classList.add('active');
+                }
+            });
+            switch (savedTheme) {
+                case 'light':
+                    document.body.classList.add('light-theme');
+                    themeLogo.src = themeLogo.dataset.lightSrc;
+                    break;
+                case 'dark':
+                    document.body.classList.add('dark-theme');
+                    themeLogo.src = themeLogo.dataset.darkSrc;
+                    break;
+                case 'preppy':
+                    document.body.classList.add('preppy-theme');
+                    themeLogo.src = themeLogo.dataset.preppySrc;
+                    break;
+            }
+            if (savedHighContrast) {
+                document.body.classList.add('high-contrast');
+            }
+            fullscreenMode.checked = savedFullscreen;
+            if (savedFullscreen) {
+                document.body.requestFullscreen();
+            }
+            showStatus.checked = savedShowStatus;
+            statusBar.style.display = savedShowStatus ? 'block' : 'none';
+            highContrastMode.checked = savedHighContrast;
+            if (savedHighContrast) {
+                document.body.classList.add('high-contrast');
+            }
+            const disableFaceIDCheckbox = document.getElementById('disableFaceID');
+            disableFaceIDCheckbox.checked = savedFaceIDDisabled;
+            handleFaceIDDisabling(savedFaceIDDisabled);
+        });
+        async function updateBattery() {
+            try {
+                if ('getBattery' in navigator) {
+                    const battery = await navigator.getBattery();
+                    const level = Math.floor(battery.level * 100);
+                    batteryLevel.textContent = `${level}%`;
+                    battery.addEventListener('levelchange', () => {
+                        const newLevel = Math.floor(battery.level * 100);
+                        batteryLevel.textContent = `${newLevel}%`;
+                    });
+                } else {
+                    batteryLevel.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Battery status not supported');
+                batteryLevel.style.display = 'none';
+            }
+        }
+        function updateStatusBar() {
+            const date = new Date();
+            currentTime.textContent = date.toLocaleTimeString();
+            currentDate.textContent = date.toLocaleDateString();
+            updateBattery();
+        }
+        updateStatusBar();
+        setInterval(updateStatusBar, 1000);
+        const URL = "https:
+        let model, webcam, labelContainer, maxPredictions;
+        let cameraPermissionGranted = false;
+        async function requestCameraPermission() {
+            if (loadSettings('disableFaceID', false)) {
+                console.log("Face ID is disabled. Skipping camera permission request.");
+                return false;
+            }
+            if (cameraPermissionGranted) {
+                return true;
+            }
+            try {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    stream.getTracks().forEach(track => track.stop());
+                    cameraPermissionGranted = true;
+                    console.log("Camera permission granted successfully");
+                    return true;
+                } else {
+                    throw new Error("Camera access not supported");
+                }
+            } catch (error) {
+                console.error("Camera Permission Error:", {
+                    name: error.name,
+                    message: error.message
+                });
+                if (!loadSettings('disableFaceID', false)) {
+                    let errorMessage = "Camera access failed. ";
+                    switch (error.name) {
+                        case 'NotAllowedError':
+                            errorMessage += "Permission was denied. Please enable camera access in your browser settings.";
+                            break;
+                        case 'NotFoundError':
+                            errorMessage += "No camera found on this device.";
+                            break;
+                        default:
+                            errorMessage += "An unexpected error occurred.";
+                    }
+                    alert(errorMessage);
+                }
+                return false;
+            }
+        }
+        function handleFaceIDDisabling(isDisabled) {
+            saveSettings('disableFaceID', isDisabled);
+            const webcamContainer = document.getElementById('webcamContainer');
+            const lockScreen = document.getElementById('lockScreen');
+            const editorContainer = document.querySelector('.editorContainer');
+            if (isDisabled) {
+                if (webcam) {
+                    webcam.stop();
+                }
+                if (noUserTimer) {
+                    clearTimeout(noUserTimer);
+                    noUserTimer = null;
+                }
+                isLocked = false;
+                lockScreen.classList.remove('visible');
+                editorContainer.classList.remove('hidden');
+                window.disableFaceIDPermanently = true;
+                lockScreen.style.display = 'none';
+                lockScreen.style.visibility = 'hidden';
+                lockScreen.style.opacity = '0';
+            } else {
+                window.disableFaceIDPermanently = false;
+                lockScreen.style.display = 'flex';
+                lockScreen.style.visibility = 'visible';
+                if (webcam) {
+                    webcam.play();
+                }
+                window.requestAnimationFrame(loop);
+                const lockScreen = document.getElementById('lockScreen');
+                lockScreen.classList.add('visible');
+                document.querySelector('.editorContainer').classList.add('hidden');
+                isLocked = true;
+                createCircles();
+            }
+        }
+        async function init() {
+            const isDisabled = loadSettings('disableFaceID', false);
+            if (isDisabled) {
+                console.log("Face ID is disabled. Skipping camera initialization.");
+                return false; 
+            }
+            try {
+                const permissionGranted = await requestCameraPermission();
+                if (!permissionGranted) {
+                    throw new Error("Camera permission not granted");
+                }
+                const modelURL = URL + "model.json";
+                const metadataURL = URL + "metadata.json";
+                model = await tmImage.load(modelURL, metadataURL);
+                maxPredictions = model.getTotalClasses();
+                const flip = true;
+                webcam = new tmImage.Webcam(400, 400, flip);
+                const requiredMethods = ['setup', 'play', 'update'];
+                const missingMethods = requiredMethods.filter(method => typeof webcam[method] !== 'function');
+                if (missingMethods.length > 0) {
+                    throw new Error(`Missing webcam methods: ${missingMethods.join(', ')}`);
+                }
+                await webcam.setup();
+                await webcam.play();
+                window.requestAnimationFrame(loop);
+                const webcamContainer = document.getElementById('webcamContainer');
+                webcamContainer.appendChild(webcam.canvas);
+                labelContainer = document.createElement("div");
+                labelContainer.style.display = "none";
+                document.body.appendChild(labelContainer);
+                for (let i = 0; i < maxPredictions; i++) {
+                    labelContainer.appendChild(document.createElement("div"));
+                }
+                console.log("Webcam initialization complete");
+                return true;
+            } catch (error) {
+                console.error('Webcam Initialization Error:', error);
+                if (!loadSettings('disableFaceID', false)) {
+                    let errorMessage = "Webcam initialization failed. ";
+                    errorMessage += error.message || "An unexpected error occurred.";
+                    alert(errorMessage);
+                }
+                return false;
+            }
+        }
+        function requestCameraAccess() {
+            return new Promise((resolve, reject) => {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ video: true })
+                        .then(resolve)
+                        .catch(reject);
+                } else if (navigator.getUserMedia) {
+                    navigator.getUserMedia({ video: true }, resolve, reject);
+                } else if (navigator.webkitGetUserMedia) {
+                    navigator.webkitGetUserMedia({ video: true }, resolve, reject);
+                } else if (navigator.mozGetUserMedia) {
+                    navigator.mozGetUserMedia({ video: true }, resolve, reject);
+                } else {
+                    reject(new Error('getUserMedia is not supported in this browser'));
+                }
+            });
+        }
+        async function initTeachableMachine() {
+            try {
+                console.log("Starting Teachable Machine Initialization");
+                console.log("Browser Capabilities:", {
+                    mediaDevices: !!navigator.mediaDevices,
+                    getUserMedia: !!navigator.getUserMedia,
+                    webkitGetUserMedia: !!navigator.webkitGetUserMedia,
+                    mozGetUserMedia: !!navigator.mozGetUserMedia
+                });
+                console.log("Model URLs:", {
+                    modelURL: URL + "model.json",
+                    metadataURL: URL + "metadata.json"
+                });
+                const modelURL = URL + "model.json";
+                const metadataURL = URL + "metadata.json";
+                console.log("Attempting to load model...");
+                model = await tmImage.load(modelURL, metadataURL);
+                console.log("Model loaded successfully");
+                maxPredictions = model.getTotalClasses();
+                console.log(`Total model classes: ${maxPredictions}`);
+                console.log("Initializing webcam...");
+                const flip = true;
+                webcam = new tmImage.Webcam(400, 400, flip);
+                console.log("Webcam object created:", !!webcam);
+                console.log("Available webcam methods:", Object.keys(webcam));
+                const requiredMethods = ['setup', 'play', 'update'];
+                const missingMethods = requiredMethods.filter(method => typeof webcam[method] !== 'function');
+                if (missingMethods.length > 0) {
+                    throw new Error(`Missing webcam methods: ${missingMethods.join(', ')}`);
+                }
+                console.log("Attempting webcam setup...");
+                await webcam.setup();
+                console.log("Attempting webcam play...");
+                await webcam.play();
+                console.log("Starting animation loop...");
+                window.requestAnimationFrame(loop);
+                const webcamContainer = document.getElementById('webcamContainer');
+                webcamContainer.appendChild(webcam.canvas);
+                labelContainer = document.createElement("div");
+                labelContainer.style.display = "none";
+                document.body.appendChild(labelContainer);
+                for (let i = 0; i < maxPredictions; i++) {
+                    labelContainer.appendChild(document.createElement("div"));
+                }
+                console.log("Teachable Machine Initialization Complete");
+            } catch (error) {
+                console.error("COMPREHENSIVE INITIALIZATION ERROR:", {
+                    name: error.name,
+                    message: error.message,
+                    stack: error.stack,
+                    fullError: error
+                });
+                let errorDetails = `Initialization Failed: ${error.message}\n\n`;
+                errorDetails += "Possible Reasons:\n";
+                errorDetails += "1. Camera permissions not granted\n";
+                errorDetails += "2. No camera detected\n";
+                errorDetails += "3. Browser compatibility issue\n";
+                errorDetails += "4. Network problem loading model\n";
+                alert(errorDetails);
+            }
+        }
+        async function loop() {
+            webcam.update();
+            await predict();
+            window.requestAnimationFrame(loop);
+        }
+        let noUserTimer = null;
+        let isLocked = false;
+        const LOCK_DELAY = 2500; 
+        document.getElementById('disableFaceID').addEventListener('change', (e) => {
+            if (e.target.checked) {
+                if (webcam) {
+                    webcam.stop();
+                }
+                if (noUserTimer) {
+                    clearTimeout(noUserTimer);
+                    noUserTimer = null;
+                }
+                unlockScreen();
+            } else {
+                if (webcam) {
+                    webcam.play();
+                }
+                window.requestAnimationFrame(loop);
+            }
+        });
+        document.getElementById('disableFaceID').addEventListener('change', (e) => {
+            handleFaceIDDisabling(e.target.checked);
+        });
+        async function predict() {
+            if (window.disableFaceIDPermanently) {
+                return;
+            }
+            try {
+                const prediction = await model.predict(webcam.canvas);
+                let maxClass = prediction[0];
+                for (let i = 1; i < maxPredictions; i++) {
+                    if (prediction[i].probability > maxClass.probability) {
+                        maxClass = prediction[i];
+                    }
+                }
+                if (maxClass.className === "Locked" && maxClass.probability > 0.8) {
+                    if (!noUserTimer && !isLocked) {
+                        noUserTimer = setTimeout(() => {
+                            lockScreen();
+                        }, LOCK_DELAY);
+                    }
+                } else {
+                    if (noUserTimer) {
+                        clearTimeout(noUserTimer);
+                        noUserTimer = null;
+                    }
+                    if (maxClass.className === "Unlocked" && maxClass.probability > 0.8) {
+                        unlockScreen();
+                    }
+                }
+                for (let i = 0; i < maxPredictions; i++) {
+                    const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+                    labelContainer.childNodes[i].innerHTML = classPrediction;
+                }
+            } catch (error) {
+                console.error('Prediction error:', error);
+            }
+        }
+        function lockScreen() {
+            if (!isLocked) {
+                isLocked = true;
+                const lockScreen = document.getElementById('lockScreen');
+                const editorContainer = document.querySelector('.editorContainer');
+                lockScreen.classList.add('visible');
+                editorContainer.classList.add('hidden');
+                createCircles();
+                const lockIcon = lockScreen.querySelector('svg');
+                lockIcon.animate([
+                    { transform: 'rotate(-10deg)' },
+                    { transform: 'rotate(10deg)' },
+                    { transform: 'rotate(0deg)' }
+                ], {
+                    duration: 500,
+                    easing: 'cubic-bezier(0.36, 0, 0.66, -0.56)',
+                    iterations: 1
+                });
+            }
+        }
+        function unlockScreen() {
+            if (isLocked) {
+                isLocked = false;
+                const lockScreen = document.getElementById('lockScreen');
+                const editorContainer = document.querySelector('.editorContainer');
+                lockScreen.classList.remove('visible');
+                editorContainer.classList.remove('hidden');
+                editorContainer.animate([
+                    { transform: 'scale(0.95)', opacity: 0 },
+                    { transform: 'scale(1)', opacity: 1 }
+                ], {
+                    duration: 500,
+                    easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    iterations: 1
+                });
+            }
+        }
+        window.addEventListener('load', async () => {
+            const isDisabled = loadSettings('disableFaceID', false);
+            if (isDisabled) {
+                const lockScreen = document.getElementById('lockScreen');
+                lockScreen.classList.remove('visible');
+                lockScreen.style.display = 'none';
+                lockScreen.style.visibility = 'hidden';
+                lockScreen.style.opacity = '0';
+                document.querySelector('.editorContainer').classList.remove('hidden');
+                window.disableFaceIDPermanently = true;
+            } else {
+                const lockScreen = document.getElementById('lockScreen');
+                lockScreen.classList.add('visible');
+                document.querySelector('.editorContainer').classList.add('hidden');
+                isLocked = true;
+                createCircles();
+            }
+            try {
+                if (!isDisabled) {
+                    const initialized = await init();
+                    if (!initialized) {
+                        console.warn("Failed to initialize Face ID");
+                    }
+                }
+            } catch (error) {
+                console.error("Initialization Error:", error);
+                if (!isDisabled) {
+                    alert("Failed to initialize the application. Please reload or check your camera permissions.");
+                }
+            }
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (webcam) {
+                    webcam.stop();
+                }
+            } else {
+                if (webcam) {
+                    webcam.play();
+                }
+            }
+        });
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (webcam) {
+                    webcam.stop();
+                }
+            } else {
+                if (webcam) {
+                    webcam.play();
+                }
+            }
+        });
+        function createCircles() {
+            const container = document.querySelector('.background-circles');
+            const screenWidth = window.innerWidth * 1.75; 
+            const screenHeight = window.innerHeight;
+            const screenArea = screenWidth * screenHeight;
+            const processorCount = navigator.hardwareConcurrency || 4;
+            let numCircles = Math.floor(Math.pow(screenArea, 0.5) / 45); 
+            const processorBonus = Math.log(processorCount + 1) * 5;
+            numCircles += processorBonus;
+            let performanceBonus = 0;
+            try {
+                if (navigator.deviceMemory) {
+                    performanceBonus += navigator.deviceMemory * 2;
+                }
+            } catch (e) {}
+            numCircles += performanceBonus;
+            const maxCircles = 150;
+            const randomFactor = Math.random() * 0.2 + 1; 
+            numCircles = Math.floor(numCircles * randomFactor);
+            numCircles = Math.max(20, Math.min(maxCircles, Math.round(numCircles)));
+            container.innerHTML = '';
+            for (let i = 0; i < numCircles; i++) {
+                const circle = document.createElement('div');
+                circle.className = 'circle';
+                const size = Math.pow(Math.random(), 2) * 300 + 50;
+                circle.style.width = `${size}px`; 
+                circle.style.height = `${size}px`; 
+                moveCircleToRandomPosition(circle);
+                circle.style.opacity = Math.random() * 0.5 + 0.2;
+                circle.style.filter = `blur(${Math.random() * 30 + 10}px)`;
+                container.appendChild(circle);
+            }
+            animateCircles();
+            console.log(`Circles created: ${numCircles}`, {
+                screenSize: `${screenWidth}x${screenHeight}`,
+                processors: processorCount,
+                deviceMemory: navigator.deviceMemory || 'Unknown',
+                randomFactor: randomFactor
+            });
+        }
+        function moveCircleToRandomPosition(circle) {
+            const container = document.querySelector('.background-circles');
+            const maxX = container.offsetWidth - parseInt(circle.style.width);
+            const maxY = container.offsetHeight - parseInt(circle.style.height);
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            circle.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }
+        function animateCircles() {
+            const circles = document.querySelectorAll('.circle');
+            circles.forEach(circle => {
+                moveCircleToRandomPosition(circle);
+            });
+            setTimeout(animateCircles, 20000);
+        }
+        const downloadButton = document.querySelector('.downloadButton');
+        const pdfCustomizationMenu = document.querySelector('.pdfCustomizationMenu');
+        const closePdfCustomization = document.querySelector('.closePdfCustomization');
+        const generatePdfBtn = document.getElementById('generatePdfBtn');
+        downloadButton.addEventListener('click', () => {
+            pdfCustomizationMenu.style.display = 'block';
+        });
+        closePdfCustomization.addEventListener('click', () => {
+            pdfCustomizationMenu.style.display = 'none';
+        });
+        generatePdfBtn.addEventListener('click', generatePDF);
+        async function generatePDF() {
+            const textColor = document.getElementById('pdfTextColor').value;
+            const backgroundColor = document.getElementById('pdfBackgroundColor').value;
+            const fontSize = document.getElementById('pdfFontSize').value;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = paper.innerHTML;
+            tempDiv.style.color = textColor;
+            tempDiv.style.backgroundColor = backgroundColor;
+            tempDiv.style.fontSize = `${fontSize}px`;
+            tempDiv.style.padding = '20px';
+            tempDiv.style.width = '210mm'; 
+            tempDiv.style.minHeight = '297mm'; 
+            document.body.appendChild(tempDiv);
+            const canvas = await html2canvas(tempDiv, {
+                scale: 2,
+                useCORS: true,
+                logging: false
+            });
+            document.body.removeChild(tempDiv);
+            const imgData = canvas.toDataURL('image/jpeg', 1.0);
+            const pdf = new jspdf.jsPDF({
+                orientation: 'p',
+                unit: 'mm',
+                format: 'a4'
+            });
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            const imgWidth = canvas.width;
+            const imgHeight = canvas.height;
+            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+            const imgX = (pdfWidth - imgWidth * ratio) / 2;
+            const imgY = 30;
+            pdf.addImage(imgData, 'JPEG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+            const title = document.querySelector('.paper h1') ? 
+                document.querySelector('.paper h1').textContent.trim() : 
+                'Document';
+            pdf.setFontSize(16);
+            pdf.setTextColor(0, 0, 0); 
+            pdf.text(title, pdfWidth / 2, 20, { align: 'center' });
+            pdf.save(`${title}.pdf`);
+            pdfCustomizationMenu.style.display = 'none';
+        }
+        const fontSizeButton = document.querySelector('.fontSizeButton');
+        fontSizeButton.addEventListener('click', () => {
+            const currentSize = window.getComputedStyle(paper, null).getPropertyValue('font-size');
+            const newSize = parseFloat(currentSize) + 1;
+            paper.style.fontSize = `${newSize}px`;
+            fontSizeButton.textContent = `${newSize}`;
+        });
+        const primaryColor = document.querySelector('.primaryColor');
+        primaryColor.addEventListener('click', () => {
+            const color = window.getComputedStyle(primaryColor, null).getPropertyValue('background-color');
+            document.execCommand('foreColor', false, color);
+        });
+        const secondaryColor = document.querySelector('.secondaryColor');
+        secondaryColor.addEventListener('click', () => {
+            const color = window.getComputedStyle(secondaryColor, null).getPropertyValue('background-color');
+            document.execCommand('hiliteColor', false, color);
+        });
+        const paintButton = document.querySelector('.paintButton');
+        paintButton.addEventListener('click', () => {
+            const fonts = ['Arial', 'Verdana', 'Times New Roman', 'Courier New', 'Georgia'];
+            const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
+            document.execCommand('fontName', false, randomFont);
+        });
+        window.addEventListener('load', createCircles);
+        window.addEventListener('resize', createCircles);
+        function splitIntoSentences(text) {
+            return text.match(/[^\.!\?]+[\.!\?]+/g) || [];
+        }
+        function calculateWordImportance(text) {
+            const words = text.toLowerCase().match(/\b\w+\b/g) || [];
+            const wordFreq = {};
+            const totalWords = words.length;
+            words.forEach(word => {
+                wordFreq[word] = (wordFreq[word] || 0) + 1;
+            });
+            const stopwords = [
+                'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with',
+                'is', 'are', 'was', 'were', 'can', 'will', 'would', 'should', 'this', 'that'
+            ];
+            const importantWordBoosts = {
+                'key': 1.5,
+                'important': 1.4,
+                'significant': 1.4,
+                'crucial': 1.4,
+                'innovative': 1.3,
+                'revolutionary': 1.3
+            };
+            const wordImportance = {};
+            Object.keys(wordFreq).forEach(word => {
+                let importance = stopwords.includes(word) ? 0.3 : 1;
+                if (importantWordBoosts[word]) {
+                    importance *= importantWordBoosts[word];
+                }
+                wordImportance[word] = (wordFreq[word] / totalWords) * importance;
+            });
+            return wordImportance;
+        }
+        function extractKeyPoints(text) {
+            const keyPointPatterns = [
+                /^(In summary|Notably|Importantly|Crucially|Key point)[:\s](.+)/gmi,
+                /([A-Z][a-z]+\s+(?:is|are|was|were)\s+(?:a|an|the)\s+[a-z]+\s+[a-z]+)/gmi
+            ];
+            let keyPoints = [];
+            keyPointPatterns.forEach(regex => {
+                const matches = text.match(regex) || [];
+                keyPoints.push(...matches);
+            });
+            return keyPoints.map(point => point.trim()).slice(0, 3);
+        }
+        function generateAdvancedSummary(text, options = {}) {
+            const {
+                numberOfSentences = 3,
+                includeKeyPoints = true,
+                summaryStyle = 'concise'
+            } = options;
+            if (text.length < 100 || text.split(/\s+/).length < 30) {
+                return "Insufficient content for meaningful summary.";
+            }
+            const sentences = splitIntoSentences(text);
+            const wordImportance = calculateWordImportance(text);
+            const scoredSentences = sentences.map(sentence => {
+                const words = sentence.toLowerCase().match(/\b\w+\b/g) || [];
+                const baseScore = words.reduce((sum, word) => sum + (wordImportance[word] || 0), 0);
+                const sentenceLength = words.length;
+                const linguisticFeatures = {
+                    hasKeyVerbs: ['is', 'are', 'was', 'were', 'can', 'will', 'would', 'should'].some(verb => 
+                        sentence.toLowerCase().includes(verb)),
+                    hasNumbers: /\d+/.test(sentence),
+                    hasProperNouns: /\b[A-Z][a-z]+\b/.test(sentence),
+                    startsWithStrongWord: /^(However|Moreover|Importantly|Notably)/.test(sentence)
+                };
+                const lengthFactor = sentenceLength > 10 && sentenceLength < 25 ? 1.2 : 
+                                    sentenceLength <= 10 ? 0.8 : 1;
+                const verbFactor = linguisticFeatures.hasKeyVerbs ? 1.1 : 1;
+                const numberFactor = linguisticFeatures.hasNumbers ? 1.15 : 1;
+                const properNounFactor = linguisticFeatures.hasProperNouns ? 1.2 : 1;
+                const strongWordFactor = linguisticFeatures.startsWithStrongWord ? 1.3 : 1;
+                return { 
+                    sentence, 
+                    score: baseScore * lengthFactor * verbFactor * 
+                        numberFactor * properNounFactor * strongWordFactor,
+                    features: linguisticFeatures
+                };
+            });
+            const topSentences = scoredSentences
+                .sort((a, b) => b.score - a.score)
+                .slice(0, numberOfSentences)
+                .map(s => s.sentence.trim());
+            const keyPoints = includeKeyPoints ? extractKeyPoints(text) : [];
+            switch(summaryStyle) {
+                case 'bullet':
+                    const bulletPoints = [
+                        "🔍 Key Insights:",
+                        ...topSentences.map((sentence, index) => {
+                            const bullets = ['•', '➤', '►', '✦', '⦁'];
+                            const bullet = bullets[index % bullets.length];
+                            let formattedSentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
+                            if (!['.', '!', '?'].includes(formattedSentence.slice(-1))) {
+                                formattedSentence += '.';
+                            }
+                            return `${bullet} ${formattedSentence}`;
+                        }),
+                        ...(keyPoints.length > 0 ? [
+                            "\n📌 Additional Context:",
+                            ...keyPoints.slice(0, 2).map((point, index) => {
+                                const bullets = ['◉', '◈', '◎'];
+                                const bullet = bullets[index % bullets.length];
+                                let formattedPoint = point.charAt(0).toUpperCase() + point.slice(1);
+                                if (!['.', '!', '?'].includes(formattedPoint.slice(-1))) {
+                                    formattedPoint += '.';
+                                }
+                                return `${bullet} ${formattedPoint}`;
+                            })
+                        ] : [])
+                    ];
+                    return bulletPoints.join('\n');
+                case 'detailed':
+                    return `Summary:\n${topSentences.join(' ')}\n\n` + 
+                        (keyPoints.length > 0 ? `Key Insights:\n${keyPoints.join('\n')}` : '');
+                default: 
+                    return topSentences.join(' ');
+            }
+        }
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.addedNodes) {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === Node.ELEMENT_NODE && node.tagName.match(/H[1-6]/)) {
+                            const headingText = node.textContent.trim().toLowerCase();
+                            const summaryStyles = ['concise', 'detailed', 'bullet'];
+                            const styleMatch = headingText.match(/^(\w+)\s*(summary|summarization)$/);
+                            if (styleMatch) {
+                                const requestedStyle = styleMatch[1];
+                                const textContent = paper.textContent;
+                                let summaryStyle = 'concise'; 
+                                if (summaryStyles.includes(requestedStyle)) {
+                                    summaryStyle = requestedStyle;
+                                }
+                                const summary = generateAdvancedSummary(textContent, {
+                                    numberOfSentences: 3,
+                                    includeKeyPoints: true,
+                                    summaryStyle: summaryStyle
+                                });
+                                const summaryPara = document.createElement('p');
+                                summaryPara.className = "genSummaryText";
+                                summaryPara.textContent = summary;
+                                node.parentNode.insertBefore(summaryPara, node.nextSibling);
+                            }
+                            else if (["summary", "summarization"].includes(headingText)) {
+                                const textContent = paper.textContent;
+                                const summary = generateAdvancedSummary(textContent, {
+                                    numberOfSentences: 3,
+                                    includeKeyPoints: true,
+                                    summaryStyle: 'concise'
+                                });
+                                const summaryPara = document.createElement('p');
+                                summaryPara.className = "genSummaryText";
+                                summaryPara.textContent = summary;
+                                node.parentNode.insertBefore(summaryPara, node.nextSibling);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        const config = { childList: true, subtree: true };
+        observer.observe(paper, config);
+        const logoEvents = [
+            {
+                "type": "christmas",
+                "start": "01-12",
+                "length": "1M"
+            },
+            {
+                "type": "updateVerWires",
+                "start": "13-12",
+                "length": "1D"
+            }
+        ];
+        function updateLogoBasedOnEvents() {
+            const logoImage = document.querySelector('.logoContainer .themeLogo');
+            const currentDate = new Date();
+            const currentYear = currentDate.getFullYear();
+            const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); 
+            const currentDay = String(currentDate.getDate()).padStart(2, '0'); 
+            logoEvents.forEach(event => {
+                const [eventDay, eventMonth] = event.start.split('-');
+                const eventStartDate = new Date(currentYear, eventMonth - 1, eventDay); 
+                let eventEndDate;
+                switch (event.length) {
+                    case '1D':
+                        eventEndDate = new Date(eventStartDate);
+                        eventEndDate.setDate(eventEndDate.getDate() + 1);
+                        break;
+                    case '1W':
+                        eventEndDate = new Date(eventStartDate);
+                        eventEndDate.setDate(eventEndDate.getDate() + 7);
+                        break;
+                    case '1M':
+                        eventEndDate = new Date(eventStartDate);
+                        eventEndDate.setMonth(eventEndDate.getMonth() + 1); 
+                        break;
+                    default:
+                        eventEndDate = eventStartDate; 
+                }
+                if (currentDate >= eventStartDate && currentDate < eventEndDate) {
+                    switch (event.type) {
+                        case 'christmas':
+                            logoImage.src = 'buddyicon.christmas.png'; 
+                            break;
+                        case 'updateVerWires':
+                            logoImage.src = 'codenameLogo.ver.Wires.svg';
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+        }
+        window.addEventListener('load', updateLogoBasedOnEvents);
+        function saveSettings(key, value) {
+            try {
+                localStorage.setItem(`BUDDY-DOCS.SETTINGS.${key}`, JSON.stringify(value));
+            } catch (error) {
+                console.error('Error saving settings to localStorage:', error);
+            }
+        }
+        function loadSettings(key, defaultValue = null) {
+            try {
+                const savedValue = localStorage.getItem(`BUDDY-DOCS.SETTINGS.${key}`);
+                return savedValue ? JSON.parse(savedValue) : defaultValue;
+            } catch (error) {
+                console.error('Error loading settings from localStorage:', error);
+                return defaultValue;
+            }
+        }
+        document.addEventListener('keydown', function (e) {
+            if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') {
+                e.preventDefault();
+                toggleCountMenu();
+            }
+        });
+        function calculateCounts() {
+            const paper = document.querySelector('.paper');
+            const text = paper.innerText.trim();
+            const words = text.split(/\s+/).filter(word => word !== '');
+            const wordCount = words.length;
+            const charCount = text.replace(/\s/g, '').length;
+            const paragraphs = text.split(/\n\s*\n/).filter(para => para.trim() !== '');
+            const paraCount = paragraphs.length;
+            document.getElementById('wordCount').textContent = wordCount;
+            document.getElementById('charCount').textContent = charCount;
+            document.getElementById('paraCount').textContent = paraCount;
+        }
+        let countMenuVisible = false;
+        function toggleCountMenu() {
+            const countMenu = document.getElementById('countMenu');
+            if (countMenuVisible) {
+                countMenu.style.display = 'none';
+                countMenuVisible = false;
+            } else {
+                calculateCounts();
+                countMenu.style.display = 'block';
+                countMenuVisible = true;
+            }
+        }
+        document.getElementById('closeCountMenu').addEventListener('click', function () {
+            document.getElementById('countMenu').style.display = 'none';
+            countMenuVisible = false;
+        });
+        document.getElementById('addThemeButton').addEventListener('click', () => {
+            document.getElementById('themeEditor').style.display = 'block';
+        });
+        document.getElementById('cancelThemeButton').addEventListener('click', () => {
+            document.getElementById('themeEditor').style.display = 'none';
+        });
+        document.getElementById('previewThemeButton').addEventListener('click', () => {
+            const theme = getThemeFromInputs();
+            applyCustomThemeToPreview(theme);
+        });
+        document.getElementById('saveThemeButton').addEventListener('click', () => {
+            const theme = getThemeFromInputs();
+            saveCustomTheme(theme);
+            addCustomThemeToUI(theme);
+            document.getElementById('themeEditor').style.display = 'none';
+            document.getElementById('themePreview').style.display = 'none';
+            applyCustomTheme(theme);
+        });
+        function getThemeFromInputs() {
+            const mainEditorBackgroundImage = document.getElementById('mainEditorBackgroundImage').files[0];
+            const theme = {
+                name: document.getElementById('themeNameInput').value,
+                textColor: document.getElementById('themeTextColor').value,
+                backgroundColor: document.getElementById('themeBackgroundColor').value,
+                primaryColor: document.getElementById('themePrimaryColor').value,
+                secondaryColor: document.getElementById('themeSecondaryColor').value,
+                toolbarBackground: document.getElementById('themeToolbarBackground').value,
+                toolbarBorder: document.getElementById('themeToolbarBorder').value,
+                mainEditorBackgroundColor: document.getElementById('mainEditorBackgroundColor').value,
+                mainEditorBackgroundImage: null
+            };
+            if (mainEditorBackgroundImage) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    theme.mainEditorBackgroundImage = e.target.result;
+                };
+                reader.readAsDataURL(mainEditorBackgroundImage);
+            }
+            return theme;
+        }
+        function saveCustomTheme(theme) {
+            const customThemes = loadSettings('customThemes', []);
+            customThemes.push(theme);
+            saveSettings('customThemes', customThemes);
+        }
+        function addCustomThemeToUI(theme) {
+            const container = document.getElementById('customThemesContainer');
+            const themeBox = document.createElement('div');
+            themeBox.className = 'custom-theme-box';
+            themeBox.innerHTML = `
+                <span>${theme.name}</span>
+                <button class="delete-theme-button">Delete</button>
+            `;
+            themeBox.style.backgroundColor = theme.backgroundColor;
+            themeBox.style.color = theme.textColor;
+            themeBox.querySelector('.delete-theme-button').addEventListener('click', (e) => {
+                e.stopPropagation();
+                deleteCustomTheme(theme.name);
+                container.removeChild(themeBox);
+            });
+            themeBox.addEventListener('click', () => applyCustomTheme(theme));
+            container.appendChild(themeBox);
+        }
+        function deleteCustomTheme(themeName) {
+            let customThemes = loadSettings('customThemes', []);
+            customThemes = customThemes.filter(theme => theme.name !== themeName);
+            saveSettings('customThemes', customThemes);
+        }
+        function applyCustomThemeToPreview(theme) {
+            const preview = document.getElementById('themePreview');
+            preview.style.setProperty('--text-color', theme.textColor);
+            preview.style.setProperty('--background-color', theme.backgroundColor);
+            preview.style.setProperty('--primary-color', theme.primaryColor);
+            preview.style.setProperty('--secondary-color', theme.secondaryColor);
+            preview.style.setProperty('--toolbar-background', theme.toolbarBackground);
+            preview.style.setProperty('--toolbar-border', theme.toolbarBorder);
+            const previewMainEditor = preview.querySelector('.preview-mainEditor');
+            if (theme.mainEditorBackgroundImage) {
+                previewMainEditor.style.backgroundImage = `url(${theme.mainEditorBackgroundImage})`;
+                previewMainEditor.style.backgroundSize = 'cover';
+                previewMainEditor.style.backgroundRepeat = 'no-repeat';
+            } else {
+                previewMainEditor.style.backgroundColor = theme.mainEditorBackgroundColor;
+                previewMainEditor.style.backgroundImage = 'none';
+            }
+            preview.style.display = 'block';
+        }
+        function applyCustomTheme(theme) {
+            document.body.classList.remove('light-theme', 'dark-theme', 'preppy-theme', 'high-contrast');
+            document.documentElement.style.setProperty('--text-color', theme.textColor);
+            document.documentElement.style.setProperty('--background-color', theme.backgroundColor);
+            document.documentElement.style.setProperty('--primary-color', theme.primaryColor);
+            document.documentElement.style.setProperty('--secondary-color', theme.secondaryColor);
+            document.documentElement.style.setProperty('--toolbar-background', theme.toolbarBackground);
+            document.documentElement.style.setProperty('--toolbar-border', theme.toolbarBorder);
+            const mainEditor = document.querySelector('.mainEditor');
+            if (theme.mainEditorBackgroundImage) {
+                mainEditor.style.backgroundImage = `url(${theme.mainEditorBackgroundImage})`;
+                mainEditor.style.backgroundSize = 'cover';
+                mainEditor.style.backgroundRepeat = 'no-repeat';
+            } else {
+                mainEditor.style.backgroundColor = theme.mainEditorBackgroundColor;
+                mainEditor.style.backgroundImage = 'none';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            const customThemes = loadSettings('customThemes', []);
+            customThemes.forEach(theme => addCustomThemeToUI(theme));
+        });
+      </script>
+</body>
+</html>
