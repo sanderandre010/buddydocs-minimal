@@ -41,7 +41,7 @@
             --genSummaryText-color: #FFEEAB;
             --border-selected-color: #3C8AFF;
             --border-hover-color: #8989dbbf;
-            --main-editor-background: var(--background-color);
+            --main-editor-background: var(--background-color); /* New variable for mainEditor background color */
         }
 
         .light-theme {
@@ -71,7 +71,7 @@
             --genSummaryText-color: #7c7c4e;
             --border-selected-color: #0055d4;
             --border-hover-color: #2a78eebf;
-            --main-editor-background: var(--background-color);
+            --main-editor-background: var(--background-color); /* New variable for mainEditor background color */
         }
 
         .preppy-theme {
@@ -101,7 +101,7 @@
             --genSummaryText-color: #FF69B4;
             --border-selected-color: #FF69B4;
             --border-hover-color: #FFB6C1;
-            --main-editor-background: var(--background-color);
+            --main-editor-background: var(--background-color); /* New variable for mainEditor background color */
         }
 
         .high-contrast {
@@ -131,7 +131,7 @@
             --genSummaryText-color: #FFFFFF;
             --border-selected-color: #FFFFFF;
             --border-hover-color: #FFFFFF;
-            --main-editor-background: var(--background-color);
+            --main-editor-background: var(--background-color); /* New variable for mainEditor background color */
         }
 
         .theme-cat1 {
@@ -179,7 +179,7 @@
             --genSummaryText-color: #FFEEAB;
             --border-selected-color: #3C8AFF;
             --border-hover-color: #8989dbbf;
-            --main-editor-background: url('3.9.6+catthemeimages/cat-theme-dark.png');
+            --main-editor-background: url('3.9.6+catthemeimages/cat-theme-dark.png'); /* New variable for mainEditor background image */
         }
 
         .cat2-theme {
@@ -209,7 +209,7 @@
             --genSummaryText-color: #7c7c4e;
             --border-selected-color: #0055d4;
             --border-hover-color: #2a78eebf;
-            --main-editor-background: url('3.9.6+catthemeimages/cat-theme-light.png');
+            --main-editor-background: url('3.9.6+catthemeimages/cat-theme-light.png'); /* New variable for mainEditor background image */
         }
 
         .cat3-theme {
@@ -239,7 +239,7 @@
             --genSummaryText-color: #FF69B4;
             --border-selected-color: #FF69B4;
             --border-hover-color: #FFB6C1;
-            --main-editor-background: url('3.9.6+catthemeimages/cat-theme-preppy.png');
+            --main-editor-background: url('3.9.6+catthemeimages/cat-theme-preppy.png'); /* New variable for mainEditor background image */
         }
 
         body, html { 
@@ -248,7 +248,7 @@
             font-family: 'Inter', sans-serif; 
             background: var(--background-color); 
             color: var(--text-color); 
-            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+            transition: background 0.5s ease-in-out, color 0.5s ease-in-out; /* Smoother background and text color transitions */
         } 
 
         .editorContainer {
@@ -272,10 +272,10 @@
             width: 95%; 
             max-width: 1320px; 
             height: 95vh; 
-            background: var(--main-editor-background);
-            background-position: center; 
-            background-repeat: no-repeat;
-            background-size: cover;
+            background: var(--main-editor-background); /* Use the new variable for mainEditor background */
+            background-position: center; /* Center the background image */
+            background-repeat: no-repeat; /* Prevent image from repeating */
+            background-size: cover; /* Scale image to cover the container */
             border-radius: 15px; 
             border: 1px var(--toolbar-border) solid; 
             padding: 20px; 
@@ -294,7 +294,7 @@
             overflow-y: auto; 
             padding: 20px; 
             box-sizing: border-box; 
-            transition: color 0.5s ease-in-out;
+            transition: color 0.5s ease-in-out; /* Smooth color transition */
         } 
 
         .paper h1 {
@@ -350,7 +350,7 @@
             align-items: center; 
             padding: 12px 0; 
             box-sizing: border-box; 
-            transition: background 0.3s ease-in-out;
+            transition: background 0.3s ease-in-out; /* Smooth background transition */
         } 
 
         .toolbarLeft {
@@ -392,7 +392,7 @@
 
         .textFormatButtons span:hover, .textFormatButtons span.active {
             color: var(--action-text-hovered-color); 
-            transition: color 0.3s ease-in-out;
+            transition: color 0.3s ease-in-out; /* Smooth color change on hover */
             font-weight: 600;
         } 
 
@@ -446,11 +446,11 @@
             font-size: 32px; 
             cursor: pointer; 
             margin: 12px 0; 
-            transition: transform 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out; /* Smooth scaling effect on hover */
         } 
 
         .actionButton:hover { 
-            transform: scale(1.1);
+            transform: scale(1.1); /* Slightly enlarge on hover for effect */
         } 
 
         .settingsMenu h2 {
@@ -514,13 +514,13 @@
             opacity: 0; 
             visibility: hidden; 
             transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
-            pointer-events: none;
+            pointer-events: none; /* Add this line */
         }
 
         #lockScreen.visible {
             opacity: 1;
             visibility: visible;
-            pointer-events: auto;
+            pointer-events: auto; /* Add this line */
         }
 
         .background-circles {
@@ -543,7 +543,7 @@
 
         .lock-content {
             position: relative;
-            z-index: 2;
+            z-index: 2; /* Above the circles */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -591,14 +591,14 @@
 
         #webcamContainer {
             position: fixed;
-            top: -10px;
-            left: -10px;
+            top: -10px;  /* Slightly off-screen */
+            left: -10px; /* Slightly off-screen */
             width: 20px;
             height: 20px;
-            opacity: 0.01;
-            z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
+            opacity: 0.01; /* Nearly invisible */
+            z-index: -1;  /* Behind other elements */
+            overflow: hidden; /* Hide overflow */
+            pointer-events: none; /* Ignore mouse events */
         }
 
         #webcamContainer canvas {
@@ -660,22 +660,23 @@
             cursor: pointer;
             margin-top: 20px;
         }
-      
+
+        /* Caret CSS */
         .blinktext {
             display: inline-block;
-            animation: blink 1s steps(4) infinite; 
-            vertical-align: middle; 
+            animation: blink 1s steps(4) infinite; /* Blinking effect */
+            vertical-align: middle; /* Align caret with text */
             color: #FF4242;
             text-rendering: optimizeLegibility;
         }
 
-      
+        /* Keyframes for blinking effect */
         @keyframes blink {
             0%, 100% {
-                opacity: 1;
+                opacity: 1; /* Fully visible */
             }
             40%, 60% {
-                opacity: 0.2;
+                opacity: 0.2; /* Fully transparent */
             }
         }
 
@@ -815,11 +816,11 @@
 
         .theme-box:hover {
             transform: scale(1.01);
-            box-shadow: inset 0 0 0 4px var(--border-hover-color);
+            box-shadow: inset 0 0 0 4px var(--border-hover-color); /* Dark blue border on hover */
         }
 
         .theme-box.active {
-            box-shadow: inset 0 0 0 6px var(--border-selected-color);
+            box-shadow: inset 0 0 0 6px var(--border-selected-color); /* Blue border when active */
         }
 
         .theme-dark {
@@ -981,8 +982,8 @@
         .theme-album {
             background-color: var(--separator-color);
             border-radius: 16px;
-            padding-left: 10px; 
-            padding-right: 10px;
+            padding-left: 10px; /* Add padding to center the cat theme boxes */
+            padding-right: 10px; /* Add padding to fit the right side */
         }
     </style>
 </head>
@@ -990,7 +991,7 @@
     <!-- Lock Screen -->
     <div id="lockScreen">
         <div class="background-circles">
-            <!-- skibidi js moment here -->
+            <!-- Circles will be added by JavaScript -->
         </div>
         <div class="lock-content">
             <img src="buddyicon.lockscreen.svg" alt="Icon not found (lol)">
@@ -1032,8 +1033,18 @@
         </div>
         <div class="mainEditor">
             <div class="paper" contenteditable="true" spellcheck="false">
-                <h1>buddy docs!!!</h1>
-                <span class="blinktext"><p>WE WILL RELEASE THE NO AI VERSION FIRST AT Q2 2025!!!</p></span>
+                <h1>How AI in Buddy Docs works</h1>
+                <p>This document will show you how Buddy Docs works, like for example the Face ID, the one you are using.</p>
+                <h2>Face ID</h2>
+                <p>This app uses Tensorflow.JS for the AI, including the Face ID feature too.</p>
+                <h2>Summarization Tool (BETA 2)</h2>
+                <p>We have finally made a summarization tool, which happens instantly. To summarize something, write "Summary" or "Summarization", then make it to a heading (ctrl+alt+number). It's currently not the best right now, but will improve after some updates.</p>
+                <p>How it works, is that we've trained it up on backgrounds, pets, common objects, and most importantly; faces. We then put all that data into a class, before training it, making so whenever a face is detected, it unlocks the screen. Though it doesn't unlock on a single face yet, we are developing it to manage to find out if it's a specific person or not.</p>
+                <h2>Other Features that may be added</h2>
+                <p>Done with development: Summarization tool (IN BETA)</p>
+                <p>In development: Autocorrection, Full Face ID, Chatbot, Fully integrated Study Pages, Chat with Wikipedia pages, and themes.</p>
+                <p>Might happen: Generative AI, Writing Partner 🤫, Auto-completion, Translation, Quizzes, Personalization, and much, much more.</p>
+                <span class="blinktext"><p>WE WILL RELEASE THE NO AI VERSION FIRST AT Q2 2025!!!</p></span> <!-- Caret element -->
             </div>
         </div>
         <div class="toolbarLeft">
@@ -1194,28 +1205,39 @@
         const batteryLevel = document.getElementById('batteryLevel');
         const currentTime = document.getElementById('currentTime');
         const currentDate = document.getElementById('currentDate');
+
+        // Caret functionality!!! (beta)
         const editor = document.querySelector('.paper');
+
+        // Format buttons functionality
         boldBtn.addEventListener('click', () => {
             document.execCommand('bold', false, null);
             boldBtn.classList.toggle('active');
         });
+
         italicBtn.addEventListener('click', () => {
             document.execCommand('italic', false, null);
             italicBtn.classList.toggle('active');
         });
+
         underlineBtn.addEventListener('click', () => {
             document.execCommand('underline', false, null);
             underlineBtn.classList.toggle('active');
         });
+
         document.getElementById('boldBtn').addEventListener('click', function() {
             this.classList.toggle('active');
         });
+
         document.getElementById('italicBtn').addEventListener('click', function() {
             this.classList.toggle('active');
         });
+
         document.getElementById('underlineBtn').addEventListener('click', function() {
             this.classList.toggle('active');
         });
+
+        // Keyboard shortcuts for headings
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.altKey) {
                 switch (e.key) {
@@ -1249,32 +1271,48 @@
                 }
             }
         });
+
+        // Add event listener for keydown
         document.addEventListener('keydown', (event) => {
+            // Check if Ctrl key is pressed along with 'P'
             if (event.ctrlKey && event.key === 'p') {
-                event.preventDefault(); 
+                event.preventDefault(); // Prevent the default print dialog
+
+                // Get the content from the mainEditor div
                 const content = document.querySelector('.mainEditor').innerHTML;
+
+                // Create a new window
                 const printWindow = window.open('', '', 'height=600,width=800');
                 printWindow.document.write('<html><head><title>Print</title>');
                 printWindow.document.write('</head><body>');
-                printWindow.document.write(content); 
+                printWindow.document.write(content); // Add the content to the new window
                 printWindow.document.write('</body></html>');
-                printWindow.document.close(); 
-                printWindow.focus(); 
+                printWindow.document.close(); // Close the document
+                printWindow.focus(); // Focus on the new window
+
+                // Print the content
                 printWindow.print();
-                printWindow.close(); 
+                printWindow.close(); // Close the print window after printing
             }
         });
+
+        // Update button states based on current selection
         paper.addEventListener('keyup', updateButtonStates);
         paper.addEventListener('mouseup', updateButtonStates);
         paper.addEventListener('mousedown', updateButtonStates);
+
         function updateButtonStates() {
             boldBtn.classList.toggle('active', document.queryCommandState('bold'));
             italicBtn.classList.toggle('active', document.queryCommandState('italic'));
             underlineBtn.classList.toggle('active', document.queryCommandState('underline'));
         }
+
+        // Set initial focus
         window.addEventListener('load', () => {
             paper.focus();
         });
+
+        // Keyboard shortcuts for formatting
         document.addEventListener('keydown', (e) => {
             if (e.ctrlKey && !e.altKey) {
                 switch (e.key.toLowerCase()) {
@@ -1291,61 +1329,85 @@
                         underlineBtn.click();
                         break;
                     case 's':
-                        e.preventDefault(); 
-                        document.getElementById('downloadButton').click(); 
+                        e.preventDefault(); // Prevent the default action (if any)
+                        document.getElementById('downloadButton').click(); // Trigger the download button click
                         break;
                 }
             }
         });
+
+        // Settings menu functionality
+        // Show settings menu
         settingsButton.addEventListener('click', () => {
             settingsMenu.classList.add('active');
         });
+
+        // Hide settings menu
         closeSettings.addEventListener('click', () => {
             settingsMenu.classList.remove('active');
         });
+
+        // Tab switching functionality
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
                 console.log('Tab clicked:', tab.getAttribute('data-tab'));
                 const target = tab.getAttribute('data-tab');
+
+                // Remove active class from all tabs
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
+
+                // Hide all content sections
                 contents.forEach(content => {
                     content.classList.remove('active');
                 });
+
+                // Show the corresponding content section
                 document.querySelector(`.tab-content.${target}-tab`).classList.add('active');
             });
         });
+
+        // Initialize the first tab
         tabs[0].click();
+
         highContrastMode.addEventListener('change', (e) => {
             const isChecked = e.target.checked;
             saveSettings('highContrastMode', isChecked);
+            
             if (isChecked) {
                 document.body.classList.add('high-contrast');
             } else {
                 document.body.classList.remove('high-contrast');
             }
         });
+
         fullscreenMode.addEventListener('change', (e) => {
             const isChecked = e.target.checked;
             saveSettings('fullscreen', isChecked);
+            
             if (isChecked) {
                 document.body.requestFullscreen();
             } else {
                 document.exitFullscreen();
             }
         });
+
         showStatus.addEventListener('change', (e) => {
             const isChecked = e.target.checked;
             saveSettings('showStatus', isChecked);
+            
             statusBar.style.display = isChecked ? 'block' : 'none';
         });
+
         document.querySelectorAll('.theme-box').forEach(box => {
             box.addEventListener('click', (e) => {
                 const selectedTheme = e.target.getAttribute('data-theme');
                 saveSettings('theme', selectedTheme);
+                
                 document.body.classList.remove('light-theme', 'dark-theme', 'preppy-theme', 'high-contrast', 'cat1-theme', 'cat2-theme', 'cat3-theme');
                 document.querySelectorAll('.theme-box').forEach(b => b.classList.remove('active'));
                 e.target.classList.add('active');
+                
                 switch (selectedTheme) {
                     case 'light':
                         document.body.classList.add('light-theme');
@@ -1372,18 +1434,24 @@
                 updateLogoBasedOnEvents();
             });
         });
+
         function applyCatTheme(theme) {
             document.body.classList.remove('light-theme', 'dark-theme', 'preppy-theme', 'high-contrast');
             document.body.style.backgroundImage = `url('${theme}.jpg')`;
             document.body.style.backgroundSize = 'cover';
             document.body.style.backgroundPosition = 'center';
         }
+
+        // Modify the existing event listeners to save settings
         document.addEventListener('DOMContentLoaded', () => {
+            // Load and apply saved settings
             const savedTheme = loadSettings('theme', 'dark');
             const savedFullscreen = loadSettings('fullscreen', false);
             const savedShowStatus = loadSettings('showStatus', false);
             const savedFaceIDDisabled = loadSettings('disableFaceID', false);
             const savedHighContrast = loadSettings('highContrastMode', false);
+
+            // Apply theme
             document.body.classList.remove('light-theme', 'dark-theme', 'preppy-theme', 'high-contrast');
             document.querySelectorAll('.theme-box').forEach(box => {
                 if (box.getAttribute('data-theme') === savedTheme) {
@@ -1404,29 +1472,42 @@
                     themeLogo.src = themeLogo.dataset.preppySrc;
                     break;
             }
+
+            // Apply high contrast mode
             if (savedHighContrast) {
                 document.body.classList.add('high-contrast');
             }
+
+            // Apply fullscreen
             fullscreenMode.checked = savedFullscreen;
             if (savedFullscreen) {
                 document.body.requestFullscreen();
             }
+
+            // Apply status bar
             showStatus.checked = savedShowStatus;
             statusBar.style.display = savedShowStatus ? 'block' : 'none';
+
+            // Apply high contrast mode
             highContrastMode.checked = savedHighContrast;
             if (savedHighContrast) {
                 document.body.classList.add('high-contrast');
             }
+
+            // Apply Face ID disabled state
             const disableFaceIDCheckbox = document.getElementById('disableFaceID');
             disableFaceIDCheckbox.checked = savedFaceIDDisabled;
             handleFaceIDDisabling(savedFaceIDDisabled);
         });
+
+        // Add battery monitoring
         async function updateBattery() {
             try {
                 if ('getBattery' in navigator) {
                     const battery = await navigator.getBattery();
                     const level = Math.floor(battery.level * 100);
                     batteryLevel.textContent = `${level}%`;
+
                     battery.addEventListener('levelchange', () => {
                         const newLevel = Math.floor(battery.level * 100);
                         batteryLevel.textContent = `${newLevel}%`;
@@ -1439,29 +1520,47 @@
                 batteryLevel.style.display = 'none';
             }
         }
+
+        
+        // Update the updateStatusBar function
         function updateStatusBar() {
             const date = new Date();
             currentTime.textContent = date.toLocaleTimeString();
             currentDate.textContent = date.toLocaleDateString();
             updateBattery();
         }
+
+        // Call updateStatusBar immediately and then every second
         updateStatusBar();
         setInterval(updateStatusBar, 1000);
-        const URL = "https:
+
+        // Teachable Machine Integration
+        const URL = "https://teachablemachine.withgoogle.com/models/PO4u8Sp7H/";
         let model, webcam, labelContainer, maxPredictions;
         let cameraPermissionGranted = false;
+
+
+        // Centralized camera permission request function
         async function requestCameraPermission() {
+            // Check if Face ID is permanently disabled
             if (loadSettings('disableFaceID', false)) {
                 console.log("Face ID is disabled. Skipping camera permission request.");
                 return false;
             }
+
+            // Check if permission was already granted
             if (cameraPermissionGranted) {
                 return true;
             }
+
             try {
+                // Modern method of requesting camera access
                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                     const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                    
+                    // Close the stream after checking
                     stream.getTracks().forEach(track => track.stop());
+                    
                     cameraPermissionGranted = true;
                     console.log("Camera permission granted successfully");
                     return true;
@@ -1473,6 +1572,8 @@
                     name: error.name,
                     message: error.message
                 });
+
+                // Only show error message if Face ID is not disabled
                 if (!loadSettings('disableFaceID', false)) {
                     let errorMessage = "Camera access failed. ";
                     switch (error.name) {
@@ -1485,93 +1586,144 @@
                         default:
                             errorMessage += "An unexpected error occurred.";
                     }
+
                     alert(errorMessage);
                 }
                 return false;
             }
         }
+
+        // Enhanced Face ID disabling mechanism
         function handleFaceIDDisabling(isDisabled) {
             saveSettings('disableFaceID', isDisabled);
+            
             const webcamContainer = document.getElementById('webcamContainer');
             const lockScreen = document.getElementById('lockScreen');
             const editorContainer = document.querySelector('.editorContainer');
+
             if (isDisabled) {
+                // Completely disable Face ID features
                 if (webcam) {
                     webcam.stop();
                 }
+                
+                // Remove any existing lock timers
                 if (noUserTimer) {
                     clearTimeout(noUserTimer);
                     noUserTimer = null;
                 }
+                
+                // Forcibly and permanently unlock
                 isLocked = false;
                 lockScreen.classList.remove('visible');
                 editorContainer.classList.remove('hidden');
+                
+                // Prevent future lock attempts
                 window.disableFaceIDPermanently = true;
+
+                // Additional measures to ensure lock screen is gone
                 lockScreen.style.display = 'none';
                 lockScreen.style.visibility = 'hidden';
                 lockScreen.style.opacity = '0';
             } else {
+                // Re-enable Face ID features
                 window.disableFaceIDPermanently = false;
+                
+                // Restore lock screen visibility
                 lockScreen.style.display = 'flex';
                 lockScreen.style.visibility = 'visible';
+                
+                // Reinitialize webcam if possible
                 if (webcam) {
                     webcam.play();
                 }
+                
+                // Restart the prediction loop
                 window.requestAnimationFrame(loop);
+
+                // Revert to initial locked state if needed
                 const lockScreen = document.getElementById('lockScreen');
                 lockScreen.classList.add('visible');
                 document.querySelector('.editorContainer').classList.add('hidden');
                 isLocked = true;
+
+                // Recreate background circles
                 createCircles();
             }
         }
+
+        // Load the image model
         async function init() {
+            // Check if Face ID is permanently disabled
             const isDisabled = loadSettings('disableFaceID', false);
+            
             if (isDisabled) {
                 console.log("Face ID is disabled. Skipping camera initialization.");
-                return false; 
+                return false; // Explicitly return false to indicate no initialization
             }
+
             try {
+                // Check camera permission first
                 const permissionGranted = await requestCameraPermission();
                 if (!permissionGranted) {
                     throw new Error("Camera permission not granted");
                 }
+
                 const modelURL = URL + "model.json";
                 const metadataURL = URL + "metadata.json";
+
+                // Load the model and metadata
                 model = await tmImage.load(modelURL, metadataURL);
                 maxPredictions = model.getTotalClasses();
+
+                // Setup webcam
                 const flip = true;
                 webcam = new tmImage.Webcam(400, 400, flip);
+
+                // Comprehensive method checks
                 const requiredMethods = ['setup', 'play', 'update'];
                 const missingMethods = requiredMethods.filter(method => typeof webcam[method] !== 'function');
+                
                 if (missingMethods.length > 0) {
                     throw new Error(`Missing webcam methods: ${missingMethods.join(', ')}`);
                 }
+
                 await webcam.setup();
                 await webcam.play();
                 window.requestAnimationFrame(loop);
+
+                // Move webcam canvas to container
                 const webcamContainer = document.getElementById('webcamContainer');
                 webcamContainer.appendChild(webcam.canvas);
+
+                // Create label container
                 labelContainer = document.createElement("div");
                 labelContainer.style.display = "none";
                 document.body.appendChild(labelContainer);
+                
                 for (let i = 0; i < maxPredictions; i++) {
                     labelContainer.appendChild(document.createElement("div"));
                 }
+
                 console.log("Webcam initialization complete");
                 return true;
             } catch (error) {
                 console.error('Webcam Initialization Error:', error);
+                
+                // Only show alert if Face ID is not disabled
                 if (!loadSettings('disableFaceID', false)) {
                     let errorMessage = "Webcam initialization failed. ";
                     errorMessage += error.message || "An unexpected error occurred.";
+                    
                     alert(errorMessage);
                 }
                 return false;
             }
         }
+
         function requestCameraAccess() {
             return new Promise((resolve, reject) => {
+                // Try multiple methods of requesting camera access
                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                     navigator.mediaDevices.getUserMedia({ video: true })
                         .then(resolve)
@@ -1587,50 +1739,76 @@
                 }
             });
         }
+
         async function initTeachableMachine() {
             try {
                 console.log("Starting Teachable Machine Initialization");
+                
+                // Log browser capabilities
                 console.log("Browser Capabilities:", {
                     mediaDevices: !!navigator.mediaDevices,
                     getUserMedia: !!navigator.getUserMedia,
                     webkitGetUserMedia: !!navigator.webkitGetUserMedia,
                     mozGetUserMedia: !!navigator.mozGetUserMedia
                 });
+
+                // Detailed URL logging
                 console.log("Model URLs:", {
                     modelURL: URL + "model.json",
                     metadataURL: URL + "metadata.json"
                 });
+
+                // Attempt to load model
                 const modelURL = URL + "model.json";
                 const metadataURL = URL + "metadata.json";
+                
                 console.log("Attempting to load model...");
                 model = await tmImage.load(modelURL, metadataURL);
                 console.log("Model loaded successfully");
+
                 maxPredictions = model.getTotalClasses();
                 console.log(`Total model classes: ${maxPredictions}`);
+
+                // Detailed webcam setup logging
                 console.log("Initializing webcam...");
                 const flip = true;
+                
+                // Extensive webcam initialization checks
                 webcam = new tmImage.Webcam(400, 400, flip);
                 console.log("Webcam object created:", !!webcam);
+                
                 console.log("Available webcam methods:", Object.keys(webcam));
+
+                // Comprehensive method checks
                 const requiredMethods = ['setup', 'play', 'update'];
                 const missingMethods = requiredMethods.filter(method => typeof webcam[method] !== 'function');
+                
                 if (missingMethods.length > 0) {
                     throw new Error(`Missing webcam methods: ${missingMethods.join(', ')}`);
                 }
+
                 console.log("Attempting webcam setup...");
                 await webcam.setup();
+                
                 console.log("Attempting webcam play...");
                 await webcam.play();
+                
                 console.log("Starting animation loop...");
                 window.requestAnimationFrame(loop);
+
+                // Webcam canvas placement
                 const webcamContainer = document.getElementById('webcamContainer');
                 webcamContainer.appendChild(webcam.canvas);
+
+                // Label container setup
                 labelContainer = document.createElement("div");
                 labelContainer.style.display = "none";
                 document.body.appendChild(labelContainer);
+                
                 for (let i = 0; i < maxPredictions; i++) {
                     labelContainer.appendChild(document.createElement("div"));
                 }
+
                 console.log("Teachable Machine Initialization Complete");
             } catch (error) {
                 console.error("COMPREHENSIVE INITIALIZATION ERROR:", {
@@ -1639,25 +1817,33 @@
                     stack: error.stack,
                     fullError: error
                 });
+
+                // Detailed error messaging
                 let errorDetails = `Initialization Failed: ${error.message}\n\n`;
                 errorDetails += "Possible Reasons:\n";
                 errorDetails += "1. Camera permissions not granted\n";
                 errorDetails += "2. No camera detected\n";
                 errorDetails += "3. Browser compatibility issue\n";
                 errorDetails += "4. Network problem loading model\n";
+
                 alert(errorDetails);
             }
         }
+
         async function loop() {
             webcam.update();
             await predict();
             window.requestAnimationFrame(loop);
         }
+
         let noUserTimer = null;
         let isLocked = false;
-        const LOCK_DELAY = 2500; 
+        const LOCK_DELAY = 2500; // 2.5 seconds
+
+        // Add event listener for the disableFaceID checkbox
         document.getElementById('disableFaceID').addEventListener('change', (e) => {
             if (e.target.checked) {
+                // Disable face ID
                 if (webcam) {
                     webcam.stop();
                 }
@@ -1665,29 +1851,42 @@
                     clearTimeout(noUserTimer);
                     noUserTimer = null;
                 }
+                // Optionally remove the lock screen if active
                 unlockScreen();
             } else {
+                // Enable face ID
                 if (webcam) {
                     webcam.play();
                 }
+                // Restart the prediction loop
                 window.requestAnimationFrame(loop);
             }
         });
+
+        // Modify the existing Face ID checkbox listener
         document.getElementById('disableFaceID').addEventListener('change', (e) => {
             handleFaceIDDisabling(e.target.checked);
         });
+
+
         async function predict() {
+            // Check if Face ID is permanently disabled
             if (window.disableFaceIDPermanently) {
                 return;
             }
+            
             try {
                 const prediction = await model.predict(webcam.canvas);
+                
+                // Find the class with highest probability
                 let maxClass = prediction[0];
                 for (let i = 1; i < maxPredictions; i++) {
                     if (prediction[i].probability > maxClass.probability) {
                         maxClass = prediction[i];
                     }
                 }
+
+                // Check if no user is detected
                 if (maxClass.className === "Locked" && maxClass.probability > 0.8) {
                     if (!noUserTimer && !isLocked) {
                         noUserTimer = setTimeout(() => {
@@ -1695,14 +1894,18 @@
                         }, LOCK_DELAY);
                     }
                 } else {
+                    // If user is detected, clear the timer and unlock if needed
                     if (noUserTimer) {
                         clearTimeout(noUserTimer);
                         noUserTimer = null;
                     }
+                    
                     if (maxClass.className === "Unlocked" && maxClass.probability > 0.8) {
                         unlockScreen();
                     }
                 }
+
+                // Update labels (hidden but useful for debugging)
                 for (let i = 0; i < maxPredictions; i++) {
                     const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2);
                     labelContainer.childNodes[i].innerHTML = classPrediction;
@@ -1711,14 +1914,19 @@
                 console.error('Prediction error:', error);
             }
         }
+
         function lockScreen() {
             if (!isLocked) {
                 isLocked = true;
                 const lockScreen = document.getElementById('lockScreen');
                 const editorContainer = document.querySelector('.editorContainer');
+                
                 lockScreen.classList.add('visible');
                 editorContainer.classList.add('hidden');
+
                 createCircles();
+
+                // Add a subtle shake animation to the lock icon
                 const lockIcon = lockScreen.querySelector('svg');
                 lockIcon.animate([
                     { transform: 'rotate(-10deg)' },
@@ -1731,13 +1939,17 @@
                 });
             }
         }
+
         function unlockScreen() {
             if (isLocked) {
                 isLocked = false;
                 const lockScreen = document.getElementById('lockScreen');
                 const editorContainer = document.querySelector('.editorContainer');
+                
                 lockScreen.classList.remove('visible');
                 editorContainer.classList.remove('hidden');
+
+                // Add unlock animation to the editor
                 editorContainer.animate([
                     { transform: 'scale(0.95)', opacity: 0 },
                     { transform: 'scale(1)', opacity: 1 }
@@ -1748,24 +1960,35 @@
                 });
             }
         }
+
+        // Modify the window load event listener
         window.addEventListener('load', async () => {
+            // Check if Face ID is permanently disabled on load
             const isDisabled = loadSettings('disableFaceID', false);
+            
             if (isDisabled) {
                 const lockScreen = document.getElementById('lockScreen');
                 lockScreen.classList.remove('visible');
                 lockScreen.style.display = 'none';
                 lockScreen.style.visibility = 'hidden';
                 lockScreen.style.opacity = '0';
+                
                 document.querySelector('.editorContainer').classList.remove('hidden');
+                
                 window.disableFaceIDPermanently = true;
             } else {
+                // Existing lock screen setup
                 const lockScreen = document.getElementById('lockScreen');
                 lockScreen.classList.add('visible');
                 document.querySelector('.editorContainer').classList.add('hidden');
                 isLocked = true;
+
+                // Create and start circle animations
                 createCircles();
             }
+
             try {
+                // Only attempt to initialize if Face ID is not disabled
                 if (!isDisabled) {
                     const initialized = await init();
                     if (!initialized) {
@@ -1779,6 +2002,8 @@
                 }
             }
         });
+
+        // Add event listener for visibility change
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 if (webcam) {
@@ -1790,6 +2015,8 @@
                 }
             }
         });
+
+        // Add event listener for visibility change
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
                 if (webcam) {
@@ -1801,39 +2028,71 @@
                 }
             }
         });
+
+        // circles in lock screen
         function createCircles() {
             const container = document.querySelector('.background-circles');
-            const screenWidth = window.innerWidth * 1.75; 
+            
+            // Calculate number of circles based on screen size and performance
+            const screenWidth = window.innerWidth * 1.75; // Added 1.75x modifier
             const screenHeight = window.innerHeight;
             const screenArea = screenWidth * screenHeight;
+
+            // Estimate performance based on number of logical processors
             const processorCount = navigator.hardwareConcurrency || 4;
-            let numCircles = Math.floor(Math.pow(screenArea, 0.5) / 45); 
+            
+            // More sophisticated circle calculation
+            let numCircles = Math.floor(Math.pow(screenArea, 0.5) / 45); // Sqrt to reduce scaling
+            
+            // Processor contribution with diminishing returns
             const processorBonus = Math.log(processorCount + 1) * 5;
             numCircles += processorBonus;
+            
+            // Memory and CPU check for additional bonus
             let performanceBonus = 0;
             try {
+                // Check available memory (if supported)
                 if (navigator.deviceMemory) {
                     performanceBonus += navigator.deviceMemory * 2;
                 }
             } catch (e) {}
+            
             numCircles += performanceBonus;
+
+            // More aggressive capping and randomness
             const maxCircles = 150;
-            const randomFactor = Math.random() * 0.2 + 1; 
+            const randomFactor = Math.random() * 0.2 + 1; // 100-120% of calculated circles
+            
             numCircles = Math.floor(numCircles * randomFactor);
             numCircles = Math.max(20, Math.min(maxCircles, Math.round(numCircles)));
+
+            // Clear existing circles
             container.innerHTML = '';
+
+            // Create new circles with more varied sizes and positions
             for (let i = 0; i < numCircles; i++) {
                 const circle = document.createElement('div');
                 circle.className = 'circle';
+
+                // More varied size distribution (exponential-like)
                 const size = Math.pow(Math.random(), 2) * 300 + 50;
                 circle.style.width = `${size}px`; 
                 circle.style.height = `${size}px`; 
+
+                // Initial position 
                 moveCircleToRandomPosition(circle);
+
+                // Additional randomness in opacity and blur
                 circle.style.opacity = Math.random() * 0.5 + 0.2;
                 circle.style.filter = `blur(${Math.random() * 30 + 10}px)`;
+
                 container.appendChild(circle);
             }
+
+            // Start animation loop 
             animateCircles();
+
+            // Detailed logging for debugging
             console.log(`Circles created: ${numCircles}`, {
                 screenSize: `${screenWidth}x${screenHeight}`,
                 processors: processorCount,
@@ -1841,57 +2100,79 @@
                 randomFactor: randomFactor
             });
         }
+
         function moveCircleToRandomPosition(circle) {
             const container = document.querySelector('.background-circles');
             const maxX = container.offsetWidth - parseInt(circle.style.width);
             const maxY = container.offsetHeight - parseInt(circle.style.height);
+
             const randomX = Math.random() * maxX;
             const randomY = Math.random() * maxY;
+
             circle.style.transform = `translate(${randomX}px, ${randomY}px)`;
         }
+
         function animateCircles() {
             const circles = document.querySelectorAll('.circle');
+            
             circles.forEach(circle => {
                 moveCircleToRandomPosition(circle);
             });
+
+            // Move circles every 20 seconds
             setTimeout(animateCircles, 20000);
         }
+
+        // PDF Downloading Document
         const downloadButton = document.querySelector('.downloadButton');
         const pdfCustomizationMenu = document.querySelector('.pdfCustomizationMenu');
         const closePdfCustomization = document.querySelector('.closePdfCustomization');
         const generatePdfBtn = document.getElementById('generatePdfBtn');
+
         downloadButton.addEventListener('click', () => {
             pdfCustomizationMenu.style.display = 'block';
         });
+
         closePdfCustomization.addEventListener('click', () => {
             pdfCustomizationMenu.style.display = 'none';
         });
+
         generatePdfBtn.addEventListener('click', generatePDF);
+
         async function generatePDF() {
             const textColor = document.getElementById('pdfTextColor').value;
             const backgroundColor = document.getElementById('pdfBackgroundColor').value;
             const fontSize = document.getElementById('pdfFontSize').value;
+
+            // Create a temporary div to render the content
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = paper.innerHTML;
             tempDiv.style.color = textColor;
             tempDiv.style.backgroundColor = backgroundColor;
             tempDiv.style.fontSize = `${fontSize}px`;
             tempDiv.style.padding = '20px';
-            tempDiv.style.width = '210mm'; 
-            tempDiv.style.minHeight = '297mm'; 
+            tempDiv.style.width = '210mm'; // A4 width
+            tempDiv.style.minHeight = '297mm'; // A4 height
             document.body.appendChild(tempDiv);
+
+            // Use html2canvas to capture the content as an image
             const canvas = await html2canvas(tempDiv, {
                 scale: 2,
                 useCORS: true,
                 logging: false
             });
+
+            // Remove the temporary div
             document.body.removeChild(tempDiv);
+
+            // Create PDF
             const imgData = canvas.toDataURL('image/jpeg', 1.0);
             const pdf = new jspdf.jsPDF({
                 orientation: 'p',
                 unit: 'mm',
                 format: 'a4'
             });
+
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
             const imgWidth = canvas.width;
@@ -1899,16 +2180,27 @@
             const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
             const imgX = (pdfWidth - imgWidth * ratio) / 2;
             const imgY = 30;
+
             pdf.addImage(imgData, 'JPEG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+
+            // Get the document title or use a default
             const title = document.querySelector('.paper h1') ? 
                 document.querySelector('.paper h1').textContent.trim() : 
                 'Document';
+
+            // Add title to the PDF
             pdf.setFontSize(16);
-            pdf.setTextColor(0, 0, 0); 
+            pdf.setTextColor(0, 0, 0); // Black color for title
             pdf.text(title, pdfWidth / 2, 20, { align: 'center' });
+
+            // Save the PDF
             pdf.save(`${title}.pdf`);
+
+            // Close the PDF customization menu
             pdfCustomizationMenu.style.display = 'none';
         }
+
+        // Font Size Functionality
         const fontSizeButton = document.querySelector('.fontSizeButton');
         fontSizeButton.addEventListener('click', () => {
             const currentSize = window.getComputedStyle(paper, null).getPropertyValue('font-size');
@@ -1916,38 +2208,57 @@
             paper.style.fontSize = `${newSize}px`;
             fontSizeButton.textContent = `${newSize}`;
         });
+
+        // Text Color Functionality
         const primaryColor = document.querySelector('.primaryColor');
         primaryColor.addEventListener('click', () => {
             const color = window.getComputedStyle(primaryColor, null).getPropertyValue('background-color');
             document.execCommand('foreColor', false, color);
         });
+
+        // Highlighter Color Functionality
         const secondaryColor = document.querySelector('.secondaryColor');
         secondaryColor.addEventListener('click', () => {
             const color = window.getComputedStyle(secondaryColor, null).getPropertyValue('background-color');
             document.execCommand('hiliteColor', false, color);
         });
+
+        // Font Type Functionality
         const paintButton = document.querySelector('.paintButton');
         paintButton.addEventListener('click', () => {
             const fonts = ['Arial', 'Verdana', 'Times New Roman', 'Courier New', 'Georgia'];
             const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
             document.execCommand('fontName', false, randomFont);
         });
+
+
         window.addEventListener('load', createCircles);
         window.addEventListener('resize', createCircles);
+
+        // Summarization functions
         function splitIntoSentences(text) {
+            // More robust sentence splitting
             return text.match(/[^\.!\?]+[\.!\?]+/g) || [];
         }
+
         function calculateWordImportance(text) {
+            // Enhanced word importance calculation with advanced scoring
             const words = text.toLowerCase().match(/\b\w+\b/g) || [];
             const wordFreq = {};
             const totalWords = words.length;
+
+            // Calculate frequency
             words.forEach(word => {
                 wordFreq[word] = (wordFreq[word] || 0) + 1;
             });
+
+            // Advanced stopwords and domain-specific word lists
             const stopwords = [
                 'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for', 'of', 'with',
                 'is', 'are', 'was', 'were', 'can', 'will', 'would', 'should', 'this', 'that'
             ];
+
+            // Domain-specific important words (can be expanded)
             const importantWordBoosts = {
                 'key': 1.5,
                 'important': 1.4,
@@ -1956,43 +2267,73 @@
                 'innovative': 1.3,
                 'revolutionary': 1.3
             };
+
+            // Calculate importance score with more nuanced approach
             const wordImportance = {};
             Object.keys(wordFreq).forEach(word => {
+                // Base penalty for common words
                 let importance = stopwords.includes(word) ? 0.3 : 1;
+                
+                // Boost for domain-specific important words
                 if (importantWordBoosts[word]) {
                     importance *= importantWordBoosts[word];
                 }
+                
+                // Relative frequency with additional weighting
                 wordImportance[word] = (wordFreq[word] / totalWords) * importance;
             });
+
             return wordImportance;
         }
+
         function extractKeyPoints(text) {
+            // More sophisticated key point extraction
             const keyPointPatterns = [
+                // Capture sentences starting with key phrases
                 /^(In summary|Notably|Importantly|Crucially|Key point)[:\s](.+)/gmi,
+                
+                // Capture sentences with strong descriptive words
                 /([A-Z][a-z]+\s+(?:is|are|was|were)\s+(?:a|an|the)\s+[a-z]+\s+[a-z]+)/gmi
             ];
+
             let keyPoints = [];
             keyPointPatterns.forEach(regex => {
                 const matches = text.match(regex) || [];
                 keyPoints.push(...matches);
             });
+
             return keyPoints.map(point => point.trim()).slice(0, 3);
         }
+
         function generateAdvancedSummary(text, options = {}) {
             const {
                 numberOfSentences = 3,
                 includeKeyPoints = true,
                 summaryStyle = 'concise'
             } = options;
+
+            // More comprehensive content check
             if (text.length < 100 || text.split(/\s+/).length < 30) {
                 return "Insufficient content for meaningful summary.";
             }
+
+            // Split text into sentences
             const sentences = splitIntoSentences(text);
+            
+            // Calculate word importance with enhanced algorithm
             const wordImportance = calculateWordImportance(text);
+
+            // Advanced sentence scoring
             const scoredSentences = sentences.map(sentence => {
                 const words = sentence.toLowerCase().match(/\b\w+\b/g) || [];
+                
+                // More comprehensive scoring mechanism
                 const baseScore = words.reduce((sum, word) => sum + (wordImportance[word] || 0), 0);
+                
+                // Advanced scoring factors
                 const sentenceLength = words.length;
+                
+                // Enhanced linguistic feature detection
                 const linguisticFeatures = {
                     hasKeyVerbs: ['is', 'are', 'was', 'were', 'can', 'will', 'would', 'should'].some(verb => 
                         sentence.toLowerCase().includes(verb)),
@@ -2000,12 +2341,15 @@
                     hasProperNouns: /\b[A-Z][a-z]+\b/.test(sentence),
                     startsWithStrongWord: /^(However|Moreover|Importantly|Notably)/.test(sentence)
                 };
+                
+                // Complex scoring with multiple factors
                 const lengthFactor = sentenceLength > 10 && sentenceLength < 25 ? 1.2 : 
                                     sentenceLength <= 10 ? 0.8 : 1;
                 const verbFactor = linguisticFeatures.hasKeyVerbs ? 1.1 : 1;
                 const numberFactor = linguisticFeatures.hasNumbers ? 1.15 : 1;
                 const properNounFactor = linguisticFeatures.hasProperNouns ? 1.2 : 1;
                 const strongWordFactor = linguisticFeatures.startsWithStrongWord ? 1.3 : 1;
+                
                 return { 
                     sentence, 
                     score: baseScore * lengthFactor * verbFactor * 
@@ -2013,11 +2357,17 @@
                     features: linguisticFeatures
                 };
             });
+
+            // More intelligent sentence selection
             const topSentences = scoredSentences
                 .sort((a, b) => b.score - a.score)
                 .slice(0, numberOfSentences)
                 .map(s => s.sentence.trim());
+
+            // Extract key points if requested
             const keyPoints = includeKeyPoints ? extractKeyPoints(text) : [];
+
+            // Generate summary based on style (similar to previous implementation)
             switch(summaryStyle) {
                 case 'bullet':
                     const bulletPoints = [
@@ -2025,10 +2375,12 @@
                         ...topSentences.map((sentence, index) => {
                             const bullets = ['•', '➤', '►', '✦', '⦁'];
                             const bullet = bullets[index % bullets.length];
+                            
                             let formattedSentence = sentence.charAt(0).toUpperCase() + sentence.slice(1);
                             if (!['.', '!', '?'].includes(formattedSentence.slice(-1))) {
                                 formattedSentence += '.';
                             }
+                            
                             return `${bullet} ${formattedSentence}`;
                         }),
                         ...(keyPoints.length > 0 ? [
@@ -2036,22 +2388,29 @@
                             ...keyPoints.slice(0, 2).map((point, index) => {
                                 const bullets = ['◉', '◈', '◎'];
                                 const bullet = bullets[index % bullets.length];
+                                
                                 let formattedPoint = point.charAt(0).toUpperCase() + point.slice(1);
                                 if (!['.', '!', '?'].includes(formattedPoint.slice(-1))) {
                                     formattedPoint += '.';
                                 }
+                                
                                 return `${bullet} ${formattedPoint}`;
                             })
                         ] : [])
                     ];
+
                     return bulletPoints.join('\n');
+                
                 case 'detailed':
                     return `Summary:\n${topSentences.join(' ')}\n\n` + 
                         (keyPoints.length > 0 ? `Key Insights:\n${keyPoints.join('\n')}` : '');
-                default: 
+                
+                default: // 'concise'
                     return topSentences.join(' ');
             }
         }
+
+        // Updated MutationObserver setup
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 if (mutation.addedNodes) {
@@ -2059,31 +2418,43 @@
                         if (node.nodeType === Node.ELEMENT_NODE && node.tagName.match(/H[1-6]/)) {
                             const headingText = node.textContent.trim().toLowerCase();
                             const summaryStyles = ['concise', 'detailed', 'bullet'];
+                            
+                            // Check for summary with specific style
                             const styleMatch = headingText.match(/^(\w+)\s*(summary|summarization)$/);
+                            
                             if (styleMatch) {
                                 const requestedStyle = styleMatch[1];
                                 const textContent = paper.textContent;
-                                let summaryStyle = 'concise'; 
+                                
+                                // Determine summary style
+                                let summaryStyle = 'concise'; // default
                                 if (summaryStyles.includes(requestedStyle)) {
                                     summaryStyle = requestedStyle;
                                 }
+                                
+                                // Generate summary
                                 const summary = generateAdvancedSummary(textContent, {
                                     numberOfSentences: 3,
                                     includeKeyPoints: true,
                                     summaryStyle: summaryStyle
                                 });
+
                                 const summaryPara = document.createElement('p');
                                 summaryPara.className = "genSummaryText";
                                 summaryPara.textContent = summary;
                                 node.parentNode.insertBefore(summaryPara, node.nextSibling);
                             }
+                            // Default summary trigger
                             else if (["summary", "summarization"].includes(headingText)) {
                                 const textContent = paper.textContent;
+                                
+                                // Generate default summary
                                 const summary = generateAdvancedSummary(textContent, {
                                     numberOfSentences: 3,
                                     includeKeyPoints: true,
                                     summaryStyle: 'concise'
                                 });
+
                                 const summaryPara = document.createElement('p');
                                 summaryPara.className = "genSummaryText";
                                 summaryPara.textContent = summary;
@@ -2094,8 +2465,11 @@
                 }
             });
         });
+
         const config = { childList: true, subtree: true };
         observer.observe(paper, config);
+
+        // Sample JSON configuration for events
         const logoEvents = [
             {
                 "type": "christmas",
@@ -2108,15 +2482,20 @@
                 "length": "1D"
             }
         ];
+
+        // Function to update the logo based on events
         function updateLogoBasedOnEvents() {
             const logoImage = document.querySelector('.logoContainer .themeLogo');
             const currentDate = new Date();
             const currentYear = currentDate.getFullYear();
-            const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); 
-            const currentDay = String(currentDate.getDate()).padStart(2, '0'); 
+            const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+            const currentDay = String(currentDate.getDate()).padStart(2, '0'); // Day of the month
+
             logoEvents.forEach(event => {
                 const [eventDay, eventMonth] = event.start.split('-');
-                const eventStartDate = new Date(currentYear, eventMonth - 1, eventDay); 
+                const eventStartDate = new Date(currentYear, eventMonth - 1, eventDay); // Create date object for the event
+
+                // Determine the length of the event
                 let eventEndDate;
                 switch (event.length) {
                     case '1D':
@@ -2129,15 +2508,18 @@
                         break;
                     case '1M':
                         eventEndDate = new Date(eventStartDate);
-                        eventEndDate.setMonth(eventEndDate.getMonth() + 1); 
+                        eventEndDate.setMonth(eventEndDate.getMonth() + 1); // More accurate for months
                         break;
                     default:
-                        eventEndDate = eventStartDate; 
+                        eventEndDate = eventStartDate; // Default to start date if length is not recognized
                 }
+
+                // Check if the current date falls within the event period
                 if (currentDate >= eventStartDate && currentDate < eventEndDate) {
+                    // Update the logo based on the event type
                     switch (event.type) {
                         case 'christmas':
-                            logoImage.src = 'buddyicon.christmas.png'; 
+                            logoImage.src = 'buddyicon.christmas.png'; // Change to your specific image for Christmas
                             break;
                         case 'updateVerWires':
                             logoImage.src = 'codenameLogo.ver.Wires.svg';
@@ -2148,7 +2530,11 @@
                 }
             });
         }
+
+        // Call the function to update the logo on page load
         window.addEventListener('load', updateLogoBasedOnEvents);
+
+        // Add this function to handle saving settings to localStorage
         function saveSettings(key, value) {
             try {
                 localStorage.setItem(`BUDDY-DOCS.SETTINGS.${key}`, JSON.stringify(value));
@@ -2156,6 +2542,8 @@
                 console.error('Error saving settings to localStorage:', error);
             }
         }
+
+        // Add this function to retrieve settings from localStorage
         function loadSettings(key, defaultValue = null) {
             try {
                 const savedValue = localStorage.getItem(`BUDDY-DOCS.SETTINGS.${key}`);
@@ -2165,25 +2553,37 @@
                 return defaultValue;
             }
         }
+
         document.addEventListener('keydown', function (e) {
             if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') {
                 e.preventDefault();
                 toggleCountMenu();
             }
         });
+
         function calculateCounts() {
             const paper = document.querySelector('.paper');
             const text = paper.innerText.trim();
+            
+            // Word Count
             const words = text.split(/\s+/).filter(word => word !== '');
             const wordCount = words.length;
+            
+            // Character Count
             const charCount = text.replace(/\s/g, '').length;
+            
+            // Paragraph Count
             const paragraphs = text.split(/\n\s*\n/).filter(para => para.trim() !== '');
             const paraCount = paragraphs.length;
+            
+            // Display the counts
             document.getElementById('wordCount').textContent = wordCount;
             document.getElementById('charCount').textContent = charCount;
             document.getElementById('paraCount').textContent = paraCount;
         }
+
         let countMenuVisible = false;
+
         function toggleCountMenu() {
             const countMenu = document.getElementById('countMenu');
             if (countMenuVisible) {
@@ -2195,20 +2595,26 @@
                 countMenuVisible = true;
             }
         }
+
+        // Add event listener to close the menu when the button is clicked
         document.getElementById('closeCountMenu').addEventListener('click', function () {
             document.getElementById('countMenu').style.display = 'none';
             countMenuVisible = false;
         });
+
         document.getElementById('addThemeButton').addEventListener('click', () => {
             document.getElementById('themeEditor').style.display = 'block';
         });
+
         document.getElementById('cancelThemeButton').addEventListener('click', () => {
             document.getElementById('themeEditor').style.display = 'none';
         });
+
         document.getElementById('previewThemeButton').addEventListener('click', () => {
             const theme = getThemeFromInputs();
             applyCustomThemeToPreview(theme);
         });
+
         document.getElementById('saveThemeButton').addEventListener('click', () => {
             const theme = getThemeFromInputs();
             saveCustomTheme(theme);
@@ -2217,6 +2623,7 @@
             document.getElementById('themePreview').style.display = 'none';
             applyCustomTheme(theme);
         });
+
         function getThemeFromInputs() {
             const mainEditorBackgroundImage = document.getElementById('mainEditorBackgroundImage').files[0];
             const theme = {
@@ -2230,6 +2637,7 @@
                 mainEditorBackgroundColor: document.getElementById('mainEditorBackgroundColor').value,
                 mainEditorBackgroundImage: null
             };
+
             if (mainEditorBackgroundImage) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -2237,13 +2645,16 @@
                 };
                 reader.readAsDataURL(mainEditorBackgroundImage);
             }
+
             return theme;
         }
+
         function saveCustomTheme(theme) {
             const customThemes = loadSettings('customThemes', []);
             customThemes.push(theme);
             saveSettings('customThemes', customThemes);
         }
+
         function addCustomThemeToUI(theme) {
             const container = document.getElementById('customThemesContainer');
             const themeBox = document.createElement('div');
@@ -2262,11 +2673,13 @@
             themeBox.addEventListener('click', () => applyCustomTheme(theme));
             container.appendChild(themeBox);
         }
+
         function deleteCustomTheme(themeName) {
             let customThemes = loadSettings('customThemes', []);
             customThemes = customThemes.filter(theme => theme.name !== themeName);
             saveSettings('customThemes', customThemes);
         }
+
         function applyCustomThemeToPreview(theme) {
             const preview = document.getElementById('themePreview');
             preview.style.setProperty('--text-color', theme.textColor);
@@ -2286,6 +2699,7 @@
             }
             preview.style.display = 'block';
         }
+
         function applyCustomTheme(theme) {
             document.body.classList.remove('light-theme', 'dark-theme', 'preppy-theme', 'high-contrast');
             document.documentElement.style.setProperty('--text-color', theme.textColor);
@@ -2304,6 +2718,7 @@
                 mainEditor.style.backgroundImage = 'none';
             }
         }
+
         document.addEventListener('DOMContentLoaded', () => {
             const customThemes = loadSettings('customThemes', []);
             customThemes.forEach(theme => addCustomThemeToUI(theme));
