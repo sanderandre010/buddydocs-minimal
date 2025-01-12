@@ -1,0 +1,13 @@
+{
+  "name": "Buddy Docs",
+  "short_name": "Buddy Docs",
+  "icons": [
+    {
+      "src": "buddyicon.premium.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone"
+}
