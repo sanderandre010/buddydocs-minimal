@@ -1,13 +1,16 @@
 {
   "name": "Buddy Docs",
   "short_name": "Buddy Docs",
+  "description": "Buddy Docs (BETA) app - more stuff will come soon!",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#13120F",
+  "theme_color": "#13120F",
   "icons": [
     {
-      "src": "buddyicon.premium.svg",
+      "src": "/icons/buddyicon.premium.svg",
       "sizes": "any",
       "type": "image/svg+xml"
     }
-  ],
-  "start_url": "/",
-  "display": "standalone"
+  ]
 }
