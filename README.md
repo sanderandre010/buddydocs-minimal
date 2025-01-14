@@ -1,8 +1,8 @@
-# buddydocs-minimal
+# buddydocs-minimal (work)
 Buddy Docs (BETA) app using basic frontend
 
-## last update
-- finally added a github page! :D
+## warning!!
+this is a work branch, this will be used for any beta version, and coding everything directly. Most of the time many files aren't completed, or have something else wrong. If you want a better experience, **switch back to the main branch.**
 
 ## about me (not that important)
 
