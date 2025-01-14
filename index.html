@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1396,8 +1395,31 @@
                 const selectedTheme = e.target.getAttribute('data-theme');
                 saveSettings('theme', selectedTheme);
                 
+                // Reset all theme-related styles
                 document.body.classList.remove('light-theme', 'dark-theme', 'preppy-theme', 'high-contrast', 'cat1-theme', 'cat2-theme', 'cat3-theme');
                 document.querySelectorAll('.theme-box').forEach(b => b.classList.remove('active'));
+                
+                // Reset all custom theme properties
+                const cssProperties = [
+                    '--text-color', '--background-color', '--primary-color', '--secondary-color',
+                    '--toolbar-background', '--toolbar-border', '--main-editor-background',
+                    '--action-button-color', '--action-text-hovered-color', '--tool-button-background',
+                    '--tool-button-text', '--text-format-container-background', '--color-palette-background',
+                    '--primary-color-swatch', '--secondary-color-swatch', '--genSummaryText-color',
+                    '--status-bar-background', '--status-bar-text', '--separator-color',
+                    '--settings-menu-background', '--settings-menu-text', '--close-button-color'
+                ];
+                
+                // Remove all custom properties
+                cssProperties.forEach(prop => {
+                    document.documentElement.style.removeProperty(prop);
+                });
+
+                // Reset mainEditor background
+                const mainEditor = document.querySelector('.mainEditor');
+                mainEditor.style.backgroundImage = 'none';
+                mainEditor.style.backgroundColor = '';
+
                 e.target.classList.add('active');
                 
                 switch (selectedTheme) {
@@ -1415,12 +1437,15 @@
                         break;
                     case 'cat1':
                         document.body.classList.add('cat1-theme');
+                        themeLogo.src = themeLogo.dataset.darkSrc;
                         break;
                     case 'cat2':
                         document.body.classList.add('cat2-theme');
+                        themeLogo.src = themeLogo.dataset.lightSrc;
                         break;
                     case 'cat3':
                         document.body.classList.add('cat3-theme');
+                        themeLogo.src = themeLogo.dataset.preppySrc;
                         break;
                 }
                 updateLogoBasedOnEvents();
@@ -2483,6 +2508,17 @@
             const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
             const currentDay = String(currentDate.getDate()).padStart(2, '0'); // Day of the month
 
+            // First check theme-based logos
+            const bodyClasses = document.body.classList;
+            if (bodyClasses.contains('cat1-theme')) {
+                logoImage.src = 'buddyicon.svg'; // Dark theme logo for cat1
+            } else if (bodyClasses.contains('cat2-theme')) {
+                logoImage.src = 'buddyicon.premium.svg'; // Light theme logo for cat2
+            } else if (bodyClasses.contains('cat3-theme')) {
+                logoImage.src = 'buddyicon.preppy.svg'; // Preppy theme logo for cat3
+            }
+
+            // Then check for special events (keep existing event logic)
             logoEvents.forEach(event => {
                 const [eventDay, eventMonth] = event.start.split('-');
                 const eventStartDate = new Date(currentYear, eventMonth - 1, eventDay); // Create date object for the event
@@ -2602,67 +2638,102 @@
             document.getElementById('themeEditor').style.display = 'none';
         });
 
-        document.getElementById('previewThemeButton').addEventListener('click', () => {
-            const theme = getThemeFromInputs();
+        document.getElementById('previewThemeButton').addEventListener('click', async () => {
+            const theme = await getThemeFromInputs();
             applyCustomThemeToPreview(theme);
         });
 
-        document.getElementById('saveThemeButton').addEventListener('click', () => {
-            const theme = getThemeFromInputs();
-            saveCustomTheme(theme);
-            addCustomThemeToUI(theme);
+        document.getElementById('saveThemeButton').addEventListener('click', async () => {
+            const theme = await getThemeFromInputs();
+            const savedTheme = await saveCustomTheme(theme);
+            
+            const existingThemeEl = document.querySelector(`.custom-theme-box[data-theme-name="${theme.name}"]`);
+            if (existingThemeEl) {
+                existingThemeEl.remove();
+            }
+            
+            addCustomThemeToUI(savedTheme);
             document.getElementById('themeEditor').style.display = 'none';
             document.getElementById('themePreview').style.display = 'none';
-            applyCustomTheme(theme);
+            applyCustomTheme(savedTheme);
         });
 
         function getThemeFromInputs() {
-            const mainEditorBackgroundImage = document.getElementById('mainEditorBackgroundImage').files[0];
-            const theme = {
-                name: document.getElementById('themeNameInput').value,
-                textColor: document.getElementById('themeTextColor').value,
-                backgroundColor: document.getElementById('themeBackgroundColor').value,
-                primaryColor: document.getElementById('themePrimaryColor').value,
-                secondaryColor: document.getElementById('themeSecondaryColor').value,
-                toolbarBackground: document.getElementById('themeToolbarBackground').value,
-                toolbarBorder: document.getElementById('themeToolbarBorder').value,
-                mainEditorBackgroundColor: document.getElementById('mainEditorBackgroundColor').value,
-                mainEditorBackgroundImage: null
-            };
-
-            if (mainEditorBackgroundImage) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    theme.mainEditorBackgroundImage = e.target.result;
+            return new Promise((resolve) => {
+                const mainEditorBackgroundImage = document.getElementById('mainEditorBackgroundImage').files[0];
+                const theme = {
+                    name: document.getElementById('themeNameInput').value,
+                    textColor: document.getElementById('themeTextColor').value,
+                    backgroundColor: document.getElementById('themeBackgroundColor').value,
+                    primaryColor: document.getElementById('themePrimaryColor').value,
+                    secondaryColor: document.getElementById('themeSecondaryColor').value,
+                    toolbarBackground: document.getElementById('themeToolbarBackground').value,
+                    toolbarBorder: document.getElementById('themeToolbarBorder').value,
+                    mainEditorBackgroundColor: document.getElementById('mainEditorBackgroundColor').value,
+                    mainEditorBackgroundImage: null
                 };
-                reader.readAsDataURL(mainEditorBackgroundImage);
-            }
 
-            return theme;
+                if (mainEditorBackgroundImage) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        theme.mainEditorBackgroundImage = e.target.result;
+                        resolve(theme);
+                    };
+                    reader.readAsDataURL(mainEditorBackgroundImage);
+                } else {
+                    resolve(theme);
+                }
+            });
         }
 
         function saveCustomTheme(theme) {
-            const customThemes = loadSettings('customThemes', []);
-            customThemes.push(theme);
-            saveSettings('customThemes', customThemes);
+            return new Promise((resolve) => {
+                const customThemes = loadSettings('customThemes', []);
+                const existingThemeIndex = customThemes.findIndex(t => t.name === theme.name);
+                
+                const themeToSave = {
+                    ...theme,
+                    mainEditorBackgroundImage: theme.mainEditorBackgroundImage // Save the Data URL directly
+                };
+
+                if (existingThemeIndex >= 0) {
+                    customThemes[existingThemeIndex] = themeToSave;
+                } else {
+                    customThemes.push(themeToSave);
+                }
+
+                saveSettings('customThemes', customThemes);
+                resolve(themeToSave);
+            });
         }
 
         function addCustomThemeToUI(theme) {
             const container = document.getElementById('customThemesContainer');
             const themeBox = document.createElement('div');
             themeBox.className = 'custom-theme-box';
+            themeBox.setAttribute('data-theme-name', theme.name);
             themeBox.innerHTML = `
                 <span>${theme.name}</span>
                 <button class="delete-theme-button">Delete</button>
             `;
             themeBox.style.backgroundColor = theme.backgroundColor;
             themeBox.style.color = theme.textColor;
+            
             themeBox.querySelector('.delete-theme-button').addEventListener('click', (e) => {
                 e.stopPropagation();
                 deleteCustomTheme(theme.name);
                 container.removeChild(themeBox);
             });
-            themeBox.addEventListener('click', () => applyCustomTheme(theme));
+            
+            themeBox.addEventListener('click', () => {
+                // Remove all theme classes and reset properties
+                document.body.classList.remove('light-theme', 'dark-theme', 'preppy-theme', 'high-contrast', 'cat1-theme', 'cat2-theme', 'cat3-theme');
+                document.querySelectorAll('.theme-box').forEach(box => box.classList.remove('active'));
+                
+                applyCustomTheme(theme);
+                saveSettings('theme', theme.name);
+            });
+            
             container.appendChild(themeBox);
         }
 
@@ -2693,27 +2764,70 @@
         }
 
         function applyCustomTheme(theme) {
-            document.body.classList.remove('light-theme', 'dark-theme', 'preppy-theme', 'high-contrast');
-            document.documentElement.style.setProperty('--text-color', theme.textColor);
-            document.documentElement.style.setProperty('--background-color', theme.backgroundColor);
-            document.documentElement.style.setProperty('--primary-color', theme.primaryColor);
-            document.documentElement.style.setProperty('--secondary-color', theme.secondaryColor);
-            document.documentElement.style.setProperty('--toolbar-background', theme.toolbarBackground);
-            document.documentElement.style.setProperty('--toolbar-border', theme.toolbarBorder);
+            // Reset all theme classes first
+            document.body.classList.remove('light-theme', 'dark-theme', 'preppy-theme', 'high-contrast', 'cat1-theme', 'cat2-theme', 'cat3-theme');
+            
+            // Apply custom theme properties
+            const properties = {
+                '--text-color': theme.textColor,
+                '--background-color': theme.backgroundColor,
+                '--primary-color': theme.primaryColor,
+                '--secondary-color': theme.secondaryColor,
+                '--toolbar-background': theme.toolbarBackground,
+                '--toolbar-border': theme.toolbarBorder,
+                '--main-editor-background': theme.mainEditorBackgroundColor
+            };
+
+            Object.entries(properties).forEach(([property, value]) => {
+                document.documentElement.style.setProperty(property, value);
+            });
+
+            // Handle background image
             const mainEditor = document.querySelector('.mainEditor');
             if (theme.mainEditorBackgroundImage) {
+                // Use the saved Data URL directly
                 mainEditor.style.backgroundImage = `url(${theme.mainEditorBackgroundImage})`;
                 mainEditor.style.backgroundSize = 'cover';
                 mainEditor.style.backgroundRepeat = 'no-repeat';
             } else {
-                mainEditor.style.backgroundColor = theme.mainEditorBackgroundColor;
                 mainEditor.style.backgroundImage = 'none';
+                mainEditor.style.backgroundColor = theme.mainEditorBackgroundColor;
             }
+
+            // Update logo to default
+            themeLogo.src = themeLogo.dataset.darkSrc;
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             const customThemes = loadSettings('customThemes', []);
             customThemes.forEach(theme => addCustomThemeToUI(theme));
+        });
+
+        // Add this new function to handle theme initialization on page load
+        function initializeThemes() {
+            const savedTheme = loadSettings('theme', 'dark');
+            const customThemes = loadSettings('customThemes', []);
+            
+            // Apply saved custom themes to UI
+            customThemes.forEach(theme => addCustomThemeToUI(theme));
+            
+            // Apply active theme
+            const themeBox = document.querySelector(`.theme-box[data-theme="${savedTheme}"]`);
+            if (themeBox) {
+                themeBox.click(); // Use existing click handler for built-in themes
+            } else {
+                // Check if it's a custom theme
+                const customTheme = customThemes.find(t => t.name === savedTheme);
+                if (customTheme) {
+                    applyCustomTheme(customTheme);
+                }
+            }
+        }
+
+        // Add to DOMContentLoaded
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeThemes();
+            updateLogoBasedOnEvents();
         });
       </script>
 </body>
