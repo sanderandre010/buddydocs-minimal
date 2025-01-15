@@ -764,12 +764,26 @@
             border-radius: 10px;
             color: var(--settings-menu-text);
             z-index: 1000;
+            min-width: 200px;
         }
 
         #closeCountMenu {
-            background-color: var(--color-palette-background);
-            color: var(--action-button-color);
-            border-radius: 6px;
+            display: block;
+            width: 100%;
+            margin-top: 15px;
+            padding: 8px;
+            background-color: var(--tool-button-background);
+            color: var(--tool-button-text);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        #closeCountMenu:hover {
+            transform: scale(1.02);
         }
 
         @media (max-width: 768px) {
@@ -986,6 +1000,32 @@
             padding-left: 10px; /* Add padding to center the cat theme boxes */
             padding-right: 10px; /* Add padding to fit the right side */
         }
+
+        #persistentWordCount {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--settings-menu-background);
+            color: var(--settings-menu-text);
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: none;
+            z-index: 999;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .count-checkbox-container {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--settings-menu-text);
+        }
+
+        .count-checkbox-container input[type="checkbox"] {
+            accent-color: var(--action-button-color);
+        }
     </style>
 </head>
 <body>
@@ -1026,8 +1066,14 @@
             <p>Word Count: <span id="wordCount"></span></p>
             <p>Character Count: <span id="charCount"></span></p>
             <p>Paragraph Count: <span id="paraCount"></span></p>
+            <div class="count-checkbox-container">
+                <input type="checkbox" id="showPersistentCount">
+                <label for="showPersistentCount">Always show word count</label>
+            </div>
             <button id="closeCountMenu">Close</button>
         </div>
+
+        <div id="persistentWordCount"></div>
 
         <div class="logoContainer">
             <img src="buddyicon.svg" alt="" class="themeLogo" data-dark-src="buddyicon.svg" data-light-src="buddyicon.premium.svg" data-preppy-src="buddyicon.preppy.svg">
@@ -2608,6 +2654,11 @@
             document.getElementById('wordCount').textContent = wordCount;
             document.getElementById('charCount').textContent = charCount;
             document.getElementById('paraCount').textContent = paraCount;
+            
+            // Update persistent counter if enabled
+            if (showPersistentCount.checked) {
+                updatePersistentCount();
+            }
         }
 
         let countMenuVisible = false;
@@ -2628,6 +2679,41 @@
         document.getElementById('closeCountMenu').addEventListener('click', function () {
             document.getElementById('countMenu').style.display = 'none';
             countMenuVisible = false;
+        });
+
+        const persistentWordCount = document.getElementById('persistentWordCount');
+        const showPersistentCount = document.getElementById('showPersistentCount');
+
+        // Load persistent count preference
+        showPersistentCount.checked = loadSettings('showPersistentCount', false);
+        persistentWordCount.style.display = showPersistentCount.checked ? 'block' : 'none';
+
+        // Update persistent counter when checkbox changes
+        showPersistentCount.addEventListener('change', (e) => {
+            saveSettings('showPersistentCount', e.target.checked);
+            persistentWordCount.style.display = e.target.checked ? 'block' : 'none';
+            if (e.target.checked) {
+                updatePersistentCount();
+            }
+        });
+
+        function updatePersistentCount() {
+            const words = paper.innerText.trim().split(/\s+/).filter(word => word !== '').length;
+            persistentWordCount.textContent = `Words: ${words}`;
+        }
+
+        // Add input event listener to paper for real-time updates
+        paper.addEventListener('input', () => {
+            if (showPersistentCount.checked) {
+                updatePersistentCount();
+            }
+        });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (showPersistentCount.checked) {
+                updatePersistentCount();
+            }
         });
 
         document.getElementById('addThemeButton').addEventListener('click', () => {
