@@ -8,6 +8,6 @@
       "type": "image/svg+xml"
     }
   ],
-  "start_url": "/",
+  "start_url": "/buddydocs-minimal",
   "display": "standalone"
 }
