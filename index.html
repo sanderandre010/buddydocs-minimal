@@ -15,6 +15,10 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/simple-summarizer-js@1.0.0/dist/simple-summarizer.min.js"></script>
     <style>
+        @font-face {
+            font-family: 'OpenDyslexic';
+            src: url('fonts/OpenDyslexic-Regular.otf') format('opentype');
+        }
         :root {
             --text-color: #E6EFDD;
             --background-color: #13120F;
@@ -43,6 +47,13 @@
             --border-selected-color: #3C8AFF;
             --border-hover-color: #8989dbbf;
             --main-editor-background: var(--background-color); /* New variable for mainEditor background color */
+            /* New Accessibility Variables */
+            --focus-outline-color: #4A90E2;
+            --focus-outline-width: 2px;
+            --high-contrast-focus: 3px dashed #FFFFFF;
+            --reduced-motion: 0;
+            --dyslexic-font: 'OpenDyslexic', sans-serif;
+            --animation-duration: 0.3s;
         }
 
         .light-theme {
@@ -1026,6 +1037,41 @@
         .count-checkbox-container input[type="checkbox"] {
             accent-color: var(--action-button-color);
         }
+
+        /* Focus Indicator Styles */
+        .enhanced-focus *:focus {
+            outline: var(--focus-outline-width) solid var(--focus-outline-color);
+            outline-offset: 2px;
+        }
+
+        /* Color Blind Mode Styles */
+        .color-blind-deuteranopia {
+            filter: url('#deuteranopia');
+        }
+
+        .color-blind-protanopia {
+            filter: url('#protanopia');
+        }
+
+        .color-blind-tritanopia {
+            filter: url('#tritanopia');
+        }
+
+        /* Reduced Motion Styles */
+        .reduced-motion * {
+            animation-duration: 0s !important;
+            transition-duration: 0s !important;
+        }
+
+        /* Dyslexic Font Face */
+        @font-face {
+            font-family: 'OpenDyslexic';
+            src: url('fonts/OpenDyslexic-Regular.otf') format('opentype');
+        }
+
+        .dyslexic-font {
+            font-family: var(--dyslexic-font) !important;
+        }
     </style>
 </head>
 <body>
@@ -1151,9 +1197,46 @@
                 </div>
                 <div class="tab-content accessibility-tab">
                     <h2>Accessibility</h2>
-                    <label>
-                        <input type="checkbox" id="highContrastMode"> High Contrast Mode
-                    </label>
+                    <div class="accessibility-section">
+                        <label>
+                            <input type="checkbox" id="highContrastMode"> High Contrast Mode
+                        </label>
+                        
+                        <label>
+                            <input type="checkbox" id="enhancedFocus"> Enhanced Focus Indicators
+                        </label>
+
+                        <label>Color Vision Mode</label>
+                        <select id="colorBlindMode">
+                            <option value="none">Normal Vision</option>
+                            <option value="deuteranopia">Deuteranopia</option>
+                            <option value="protanopia">Protanopia</option>
+                            <option value="tritanopia">Tritanopia</option>
+                        </select>
+
+                        <label>Font Family (BETA)</label>
+                        <select id="fontFamily">
+                            <option value="default">Default</option>
+                            <option value="dyslexic">OpenDyslexic (BETA)</option>
+                        </select>
+
+                        <label>
+                            <input type="checkbox" id="reducedMotion"> Reduce Motion/Animations
+                        </label>
+
+                        <div class="keyboard-shortcuts">
+                            <h3>Keyboard Shortcuts</h3>
+                            <ul>
+                                <li><kbd>Tab</kbd> - Navigate between elements</li>
+                                <li><kbd>Space/Enter</kbd> - Activate buttons</li>
+                                <li><kbd>Ctrl + B</kbd> - Bold text</li>
+                                <li><kbd>Ctrl + I</kbd> - Italic text</li>
+                                <li><kbd>Ctrl + U</kbd> - Underline text</li>
+                                <li><kbd>Ctrl + S</kbd> - Save document</li>
+                                <li><kbd>Ctrl + Shift + C</kbd> - Word count</li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-content about-tab">
                     <h1>Buddy Docs</h1>
@@ -1180,31 +1263,31 @@
         </label>
         <label>
             Text Color:
-            <input type="color" id="themeTextColor" value="#333333">
+            <input type="color" id="themeTextColor" value="#E6EFDD">
         </label>
         <label>
             Background Color:
-            <input type="color" id="themeBackgroundColor" value="#F5F5F5">
+            <input type="color" id="themeBackgroundColor" value="#13120F">
         </label>
         <label>
             Primary Color:
-            <input type="color" id="themePrimaryColor" value="#000000">
+            <input type="color" id="themePrimaryColor" value="#FFFFFF">
         </label>
         <label>
             Secondary Color:
-            <input type="color" id="themeSecondaryColor" value="#CCCCCC">
+            <input type="color" id="themeSecondaryColor" value="#6D6551">
         </label>
         <label>
             Toolbar Background:
-            <input type="color" id="themeToolbarBackground" value="#DDDDDD">
+            <input type="color" id="themeToolbarBackground" value="#28281D">
         </label>
         <label>
             Toolbar Border:
-            <input type="color" id="themeToolbarBorder" value="#CCCCCC">
+            <input type="color" id="themeToolbarBorder" value="#6A6862">
         </label>
         <label>
             Main Editor Background Color:
-            <input type="color" id="mainEditorBackgroundColor" value="#FFFFFF">
+            <input type="color" id="mainEditorBackgroundColor" value="#13120F">
         </label>
         <label>
             Main Editor Background Image:
@@ -1222,6 +1305,21 @@
             </div>
         </div>
     </div>
+
+    <!-- Add SVG filters for color blindness -->
+    <svg style="display: none">
+        <defs>
+            <filter id="deuteranopia">
+                <feColorMatrix type="matrix" values="0.625,0.375,0,0,0 0.7,0.3,0,0,0 0,0.3,0.7,0,0 0,0,0,1,0"/>
+            </filter>
+            <filter id="protanopia">
+                <feColorMatrix type="matrix" values="0.567,0.433,0,0,0 0.558,0.442,0,0,0 0,0.242,0.758,0,0 0,0,0,1,0"/>
+            </filter>
+            <filter id="tritanopia">
+                <feColorMatrix type="matrix" values="0.95,0.05,0,0,0 0,0.433,0.567,0,0 0,0.475,0.525,0,0 0,0,0,1,0"/>
+            </filter>
+        </defs>
+    </svg>
 
     <script>
         const paper = document.querySelector('.paper');
@@ -2914,6 +3012,63 @@
         document.addEventListener('DOMContentLoaded', () => {
             initializeThemes();
             updateLogoBasedOnEvents();
+        });
+
+        // Add new accessibility settings handlers
+        document.getElementById('enhancedFocus').addEventListener('change', (e) => {
+            document.body.classList.toggle('enhanced-focus', e.target.checked);
+            saveSettings('enhancedFocus', e.target.checked);
+        });
+
+        document.getElementById('colorBlindMode').addEventListener('change', (e) => {
+            // Remove any existing color blind classes
+            document.body.classList.remove('color-blind-deuteranopia', 'color-blind-protanopia', 'color-blind-tritanopia');
+            
+            if (e.target.value !== 'none') {
+                document.body.classList.add(`color-blind-${e.target.value}`);
+            }
+            saveSettings('colorBlindMode', e.target.value);
+        });
+
+        document.getElementById('fontFamily').addEventListener('change', (e) => {
+            document.body.classList.remove('dyslexic-font');
+            if (e.target.value === 'dyslexic') {
+                document.body.classList.add('dyslexic-font');
+            } else {
+                document.body.style.fontFamily = e.target.value;
+            }
+            saveSettings('fontFamily', e.target.value);
+        });
+
+        document.getElementById('reducedMotion').addEventListener('change', (e) => {
+            document.body.classList.toggle('reduced-motion', e.target.checked);
+            saveSettings('reducedMotion', e.target.checked);
+        });
+
+        // Load and apply saved accessibility settings
+        document.addEventListener('DOMContentLoaded', () => {
+            const enhancedFocus = loadSettings('enhancedFocus', false);
+            const colorBlindMode = loadSettings('colorBlindMode', 'none');
+            const fontFamily = loadSettings('fontFamily', 'default');
+            const reducedMotion = loadSettings('reducedMotion', false);
+
+            document.getElementById('enhancedFocus').checked = enhancedFocus;
+            document.body.classList.toggle('enhanced-focus', enhancedFocus);
+
+            document.getElementById('colorBlindMode').value = colorBlindMode;
+            if (colorBlindMode !== 'none') {
+                document.body.classList.add(`color-blind-${colorBlindMode}`);
+            }
+
+            document.getElementById('fontFamily').value = fontFamily;
+            if (fontFamily === 'dyslexic') {
+                document.body.classList.add('dyslexic-font');
+            } else {
+                document.body.style.fontFamily = fontFamily;
+            }
+
+            document.getElementById('reducedMotion').checked = reducedMotion;
+            document.body.classList.toggle('reduced-motion', reducedMotion);
         });
       </script>
 </body>
